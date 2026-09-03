@@ -34,10 +34,10 @@ export default {
           950: '#2E200C',
         },
         ivory: {
-          50: '#FCFBF8',
-          100: '#FAF7F1',
-          200: '#F6F2E8', // Warm ivory background
-          300: '#ECE5D4',
+          50: '#FFFFFF',
+          100: '#FAF8F3',
+          200: '#F5F1E8', // Warm ivory background
+          300: '#EAE3D2',
           400: '#DDD2BA',
           500: '#C4B79A',
         },
@@ -54,24 +54,19 @@ export default {
         }
       },
       fontFamily: {
-        serif: ['"Cormorant Garamond"', '"Playfair Display"', 'Georgia', 'serif'],
-        sans: ['"Plus Jakarta Sans"', 'system-ui', '-apple-system', 'sans-serif'],
+        sans: ['Poppins', 'system-ui', '-apple-system', 'sans-serif'],
+        poppins: ['Poppins', 'system-ui', '-apple-system', 'sans-serif'],
+        serif: ['Poppins', 'sans-serif'], // Redirect any legacy serif classes smoothly to Poppins
       },
-      animation: {
-        'pulse-slow': 'pulse 6s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-        'float': 'float 7s ease-in-out infinite',
-        'glow': 'glow 4s ease-in-out infinite alternate',
+      fontSize: {
+        'display': ['3.75rem', { lineHeight: '1.1', letterSpacing: '-0.02em', fontWeight: '600' }],
+        'heading-1': ['3rem', { lineHeight: '1.15', letterSpacing: '-0.02em', fontWeight: '600' }],
+        'heading-2': ['2.25rem', { lineHeight: '1.2', letterSpacing: '-0.01em', fontWeight: '600' }],
+        'heading-3': ['1.625rem', { lineHeight: '1.3', letterSpacing: '-0.01em', fontWeight: '500' }],
+        'body-lg': ['1.125rem', { lineHeight: '1.75', fontWeight: '400' }], // 18px
+        'body': ['1rem', { lineHeight: '1.7', fontWeight: '400' }], // 16px
+        'body-sm': ['0.9375rem', { lineHeight: '1.6', fontWeight: '400' }], // 15px
       },
-      keyframes: {
-        float: {
-          '0%, 100%': { transform: 'translateY(0px)' },
-          '50%': { transform: 'translateY(-8px)' },
-        },
-        glow: {
-          '0%': { opacity: '0.4', filter: 'blur(30px)' },
-          '100%': { opacity: '0.8', filter: 'blur(45px)' },
-        }
-      }
     },
   },
   plugins: [],

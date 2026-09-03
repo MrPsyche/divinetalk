@@ -5,7 +5,7 @@ export default function SectionHeader({
   title,
   subtitle,
   centered = true,
-  theme = 'light', // 'light' (ivory background) or 'dark' (teal/obsidian background)
+  theme = 'light', // 'light' (ivory/white background) or 'dark' (teal/obsidian background)
   className = '',
 }) {
   const isDark = theme === 'dark';
@@ -13,18 +13,15 @@ export default function SectionHeader({
   return (
     <div className={`space-y-4 ${centered ? 'text-center mx-auto max-w-3xl' : 'max-w-2xl'} ${className}`}>
       {badge && (
-        <div className={`inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-semibold uppercase tracking-[0.2em] transition-all ${
-          isDark 
-            ? 'bg-gold-500/10 text-gold-300 border border-gold-500/30' 
-            : 'bg-sacred-600/10 text-sacred-700 border border-sacred-600/20'
+        <span className={`inline-block text-xs uppercase tracking-[0.25em] font-semibold ${
+          isDark ? 'text-gold-400' : 'text-gold-600'
         }`}>
-          <span className="w-1.5 h-1.5 rounded-full bg-gold-500 animate-pulse"></span>
-          <span>{badge}</span>
-        </div>
+          {badge}
+        </span>
       )}
 
       {title && (
-        <h2 className={`font-serif text-3xl sm:text-4xl md:text-5xl lg:text-5.5xl leading-[1.15] font-normal tracking-tight ${
+        <h2 className={`text-3xl sm:text-4xl lg:text-[2.65rem] font-semibold leading-[1.2] tracking-tight ${
           isDark ? 'text-ivory-50' : 'text-sacred-950'
         }`}>
           {title}
@@ -32,7 +29,7 @@ export default function SectionHeader({
       )}
 
       {subtitle && (
-        <p className={`text-base sm:text-lg md:text-xl font-light leading-relaxed ${
+        <p className={`text-base sm:text-lg font-normal leading-relaxed pt-1 ${
           isDark ? 'text-ivory-200/80' : 'text-sacred-800/80'
         }`}>
           {subtitle}

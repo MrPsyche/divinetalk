@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Plus, Minus, HelpCircle, Sparkles, MessageCircle } from 'lucide-react';
+import { ChevronDown, ChevronUp, MessageCircle } from 'lucide-react';
 import SectionHeader from './SectionHeader';
 import { FAQS } from '../data/siteContent';
 import { CONTACT_INFO } from '../data/bookingLinks';
@@ -13,67 +13,41 @@ export default function FaqAccordion() {
 
   return (
     <section id="faq" className="py-24 sm:py-32 bg-ivory-200 text-sacred-950 relative overflow-hidden">
-      
-      {/* Background Soft Geometry */}
-      <div className="absolute top-1/3 -right-20 w-[500px] h-[500px] bg-gold-400/5 rounded-full blur-3xl pointer-events-none"></div>
-
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="max-w-4xl mx-auto px-6 sm:px-8 lg:px-12 relative z-10">
         
         {/* Section Header */}
         <SectionHeader
-          badge="Clarity & Understanding"
+          badge="Answers & Guidance"
           title="Frequently Asked Questions"
-          subtitle="Everything you need to know about our visionary consultations, data privacy, session format, and personal free will."
+          subtitle="Everything you need to know about our visionary consultations, data privacy, and consultation format."
           theme="light"
           centered={true}
         />
 
-        {/* Accordion List */}
-        <div className="mt-14 sm:mt-16 space-y-4">
+        {/* Clean Editorial Accordion List — No Boxes */}
+        <div className="mt-16 divide-y divide-sacred-300">
           {FAQS.map((faq, index) => {
             const isOpen = openIndex === index;
 
             return (
-              <div
-                key={index}
-                className={`rounded-2xl border transition-all duration-300 overflow-hidden ${
-                  isOpen
-                    ? 'bg-ivory-50 border-gold-500/50 shadow-xl shadow-sacred-950/5'
-                    : 'bg-ivory-100/80 border-sacred-200/70 hover:border-gold-500/30'
-                }`}
-              >
+              <div key={index} className="py-6 sm:py-8">
                 <button
                   onClick={() => toggleFaq(index)}
-                  className="w-full text-left p-5 sm:p-6 flex items-center justify-between gap-4 focus:outline-none cursor-pointer"
+                  className="w-full text-left flex items-start justify-between gap-4 focus:outline-none cursor-pointer group"
                   aria-expanded={isOpen}
                 >
-                  <div className="flex items-center gap-3.5">
-                    <span className={`font-mono text-xs font-semibold px-2 py-0.5 rounded ${
-                      isOpen ? 'bg-gold-500/20 text-gold-800' : 'bg-sacred-100 text-sacred-700'
-                    }`}>
-                      0{index + 1}
-                    </span>
-                    <h3 className={`font-serif text-lg sm:text-xl font-medium ${
-                      isOpen ? 'text-sacred-950' : 'text-sacred-900'
-                    }`}>
-                      {faq.question}
-                    </h3>
-                  </div>
+                  <h3 className="text-lg sm:text-xl font-semibold text-sacred-950 group-hover:text-gold-700 transition-colors">
+                    {faq.question}
+                  </h3>
 
-                  <div className={`p-2 rounded-full border transition-all ${
-                    isOpen
-                      ? 'bg-sacred-900 text-gold-300 border-gold-500/40'
-                      : 'bg-sacred-100 text-sacred-700 border-sacred-200'
-                  }`}>
-                    {isOpen ? <Minus size={15} /> : <Plus size={15} />}
+                  <div className="pt-1 text-sacred-700 group-hover:text-gold-700 transition-colors">
+                    {isOpen ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
                   </div>
                 </button>
 
                 {isOpen && (
-                  <div className="px-5 pb-6 sm:px-6 sm:pb-7 pt-1 border-t border-sacred-100/60 animate-fadeIn">
-                    <p className="text-sm sm:text-base text-sacred-800/85 font-light leading-relaxed">
-                      {faq.answer}
-                    </p>
+                  <div className="pt-4 text-base text-sacred-800/85 font-normal leading-relaxed max-w-3xl">
+                    <p>{faq.answer}</p>
                   </div>
                 )}
               </div>
@@ -81,34 +55,21 @@ export default function FaqAccordion() {
           })}
         </div>
 
-        {/* WhatsApp Pre-Booking Assistance Help Box */}
-        <div className="mt-12 p-6 rounded-2xl bg-sacred-900 text-ivory-100 border border-gold-500/30 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-xl">
-          <div className="flex items-center gap-3.5">
-            <div className="p-3 rounded-xl bg-gold-500/10 text-gold-400">
-              <MessageCircle size={22} />
-            </div>
-            <div>
-              <h4 className="font-serif text-lg text-ivory-50 font-medium">
-                Have a specific question before booking?
-              </h4>
-              <p className="text-xs text-ivory-200/70 font-light">
-                Our support desk is available on WhatsApp to assist with scheduling and inquiries.
-              </p>
-            </div>
-          </div>
-
+        {/* Pre-Booking Support Text */}
+        <div className="mt-16 pt-8 border-t border-sacred-300 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-sacred-800">
+          <span>Have a specific question before booking?</span>
           <a
             href={`https://wa.me/${CONTACT_INFO.whatsappPreBooking.replace(/[^0-9]/g, '')}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="btn-gold px-5 py-2.5 rounded-full text-xs uppercase tracking-wider font-semibold whitespace-nowrap"
+            className="inline-flex items-center gap-2 font-semibold text-sacred-900 hover:text-gold-700 transition-colors"
           >
-            Chat with Desk
+            <MessageCircle size={16} className="text-emerald-700" />
+            <span>Chat with us on WhatsApp ({CONTACT_INFO.whatsappPreBooking})</span>
           </a>
         </div>
 
       </div>
-
     </section>
   );
 }
