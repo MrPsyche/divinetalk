@@ -70,6 +70,37 @@ export const CLARITY_CATEGORIES = [
   }
 ];
 
+export const PILLARS_OF_TRUST = [
+  {
+    number: "01",
+    title: "Private By Design",
+    subtitle: "Zero Personal Data Required",
+    description: "No name. No date of birth. No horoscope charts or family histories. Your reading is based purely on an energetic, visionary connection—protecting your identity completely.",
+    highlight: "100% Confidential"
+  },
+  {
+    number: "02",
+    title: "Beyond Prediction",
+    subtitle: "Root-Cause Understanding",
+    description: "We don't deal in fatalistic fortune-telling or vague horoscopes. We reveal the underlying 'why' behind your challenges and give you clear, actionable guidance.",
+    highlight: "Action-Oriented"
+  },
+  {
+    number: "03",
+    title: "Empowered Free Will",
+    subtitle: "Guidance, Not Fixed Destiny",
+    description: "Your choices remain entirely yours. Our consultation is designed to illuminate possibilities and remove confusion so you can exercise your personal sovereignty with confidence.",
+    highlight: "Client Agency"
+  },
+  {
+    number: "04",
+    title: "Pure Human Sanctuary",
+    subtitle: "Direct Sanctuary Experience",
+    description: "A calm, one-on-one live conversation held from the quiet comfort of your home. No complicated rituals, intimidating tools, or unnecessary mystery.",
+    highlight: "Gentle & Direct"
+  }
+];
+
 export const FOUNDERS = [
   {
     name: "HimaniK Dograa",
