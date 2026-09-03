@@ -1,24 +1,13 @@
 import React from 'react';
 import { Sparkles, Moon, Sun, ArrowRight } from 'lucide-react';
+import { SACRED_HEALING_SERVICES } from '../data/siteContent';
 
 export default function SacredHealingPreview({ onNavigateHealing }) {
-  const healingFeatures = [
-    {
-      title: 'Sacred Sleep Healing',
-      desc: 'Rest in a deep, peaceful sleep and wake up energized.',
-      icon: Moon,
-    },
-    {
-      title: 'Trauma Cord Cutting',
-      desc: 'Release energetic ties and emotional burdens from the past.',
-      icon: Sparkles,
-    },
-    {
-      title: 'Stress Release',
-      desc: 'Let go of stress, anxiety and feel light, calm and centered.',
-      icon: Sun,
-    },
-  ];
+  const iconMap = {
+    'sacred-sleep': Moon,
+    'trauma-cord-cutting': Sparkles,
+    'stress-release': Sun,
+  };
 
   return (
     <section className="py-20 lg:py-28 bg-[#073E42] text-white relative overflow-hidden">
@@ -36,7 +25,7 @@ export default function SacredHealingPreview({ onNavigateHealing }) {
           {/* Left Column (5 cols) */}
           <div className="lg:col-span-5 space-y-5 text-left">
             <span className="text-xs uppercase tracking-[0.2em] text-[#C9A84E] font-semibold block">
-              A Sacred Healing
+              A Sacred Healing Vertical
             </span>
 
             <h2 className="text-3xl sm:text-4xl lg:text-[2.6rem] font-bold leading-tight text-white">
@@ -45,7 +34,7 @@ export default function SacredHealingPreview({ onNavigateHealing }) {
             </h2>
 
             <p className="text-sm sm:text-base text-[#D0E4E6] font-normal leading-relaxed">
-              Energy-healing experiences designed to restore balance, release what no longer serves you, and help you step into your highest potential.
+              Led by healer Karan Dogra, A Sacred Healing offers gentle yet transformative high-vibrational energy work designed to release the emotional and physical burdens that weigh you down. Instead of managing symptoms, we dissolve hidden energetic roots to bring lasting harmony, restorative sleep, and vitality.
             </p>
 
             <div className="pt-2">
@@ -53,19 +42,19 @@ export default function SacredHealingPreview({ onNavigateHealing }) {
                 onClick={onNavigateHealing}
                 className="btn-pill-gold"
               >
-                <span>Explore Sacred Healing</span>
+                <span>Explore A Sacred Healing</span>
                 <ArrowRight size={14} />
               </button>
             </div>
           </div>
 
-          {/* Right Column (7 cols): 3 Gold Icon Columns */}
+          {/* Right Column (7 cols): 3 Gold Icon Columns with Rich Copy */}
           <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-3 gap-8 text-center sm:text-left">
-            {healingFeatures.map((item, idx) => {
-              const Icon = item.icon;
+            {SACRED_HEALING_SERVICES.map((item) => {
+              const Icon = iconMap[item.id] || Sparkles;
 
               return (
-                <div key={idx} className="space-y-3 flex flex-col items-center sm:items-start">
+                <div key={item.id} className="space-y-3 flex flex-col items-center sm:items-start">
                   <div className="text-[#C9A84E] pb-1">
                     <Icon size={30} strokeWidth={1.5} />
                   </div>
@@ -74,7 +63,7 @@ export default function SacredHealingPreview({ onNavigateHealing }) {
                     {item.title}
                   </h3>
 
-                  <p className="text-xs text-[#D0E4E6] font-normal leading-relaxed">
+                  <p className="text-xs sm:text-sm text-[#D0E4E6] font-normal leading-relaxed">
                     {item.desc}
                   </p>
                 </div>

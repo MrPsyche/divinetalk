@@ -3,7 +3,7 @@ import { Sun, Heart, Sprout } from 'lucide-react';
 
 export default function PhilosophySection() {
   return (
-    <section className="py-20 lg:py-24 bg-[#F6F3EC] text-[#2D3E40] relative">
+    <section className="py-20 lg:py-28 bg-[#F6F3EC] text-[#2D3E40] relative">
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
           
@@ -18,7 +18,7 @@ export default function PhilosophySection() {
             </h2>
 
             <p className="text-sm sm:text-base text-[#506062] font-normal leading-relaxed pt-1">
-              A Divine Talk goes beyond prediction. It helps you understand the root cause of your situation and see the path forward with clarity, so you can make empowered decisions.
+              In an overwhelmed world, solving our deepest challenges does not require endless birth charts, lengthy questionnaires, or analyzing historical data. A Divine Talk goes beyond superficial prediction—it uncovers the root energetic causes of your situation and illuminates the path forward so you can make empowered decisions with complete confidence.
             </p>
           </div>
 
@@ -34,7 +34,7 @@ export default function PhilosophySection() {
                 Clarity
               </h3>
               <p className="text-xs sm:text-sm text-[#6B7C7E] font-normal leading-relaxed">
-                Understand the real situation at its core.
+                Understand the true root causes of relationship conflict, career plateaus, and life roadblocks without guesswork.
               </p>
             </div>
 
@@ -47,7 +47,7 @@ export default function PhilosophySection() {
                 Guidance
               </h3>
               <p className="text-xs sm:text-sm text-[#6B7C7E] font-normal leading-relaxed">
-                Receive intuitive insights that make sense.
+                Receive pure, intuitive visionary insights and tailored solutions that bring immediate relief and practical direction.
               </p>
             </div>
 
@@ -60,7 +60,7 @@ export default function PhilosophySection() {
                 Growth
               </h3>
               <p className="text-xs sm:text-sm text-[#6B7C7E] font-normal leading-relaxed">
-                Move forward with confidence and peace.
+                Move forward with unshakeable peace, empowered free will, and the confidence to manifest lasting transformation.
               </p>
             </div>
 
