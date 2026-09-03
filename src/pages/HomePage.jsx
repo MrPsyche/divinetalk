@@ -2,14 +2,11 @@ import React from 'react';
 import HeroSection from '../components/HeroSection';
 import PhilosophySection from '../components/PhilosophySection';
 import ClaritySelector from '../components/ClaritySelector';
-import WhyTrustSection from '../components/WhyTrustSection';
-import FoundersSection from '../components/FoundersSection';
 import ProcessTimeline from '../components/ProcessTimeline';
+import FoundersSection from '../components/FoundersSection';
 import SacredHealingPreview from '../components/SacredHealingPreview';
-import DimensionsWheel from '../components/DimensionsWheel';
 import TestimonialsCarousel from '../components/TestimonialsCarousel';
 import FaqAccordion from '../components/FaqAccordion';
-import ClosingCTA from '../components/ClosingCTA';
 
 export default function HomePage({ onOpenBooking, onNavigate }) {
   const handleScrollToSection = (sectionId) => {
@@ -27,51 +24,36 @@ export default function HomePage({ onOpenBooking, onNavigate }) {
         onScrollToSection={handleScrollToSection} 
       />
 
-      {/* 02: The Big Idea / Philosophy */}
-      <PhilosophySection 
-        onNavigateWhyAdt={() => onNavigate('/why-adt')} 
-      />
+      {/* 02: Our Philosophy */}
+      <PhilosophySection />
 
-      {/* 03: What Are You Looking For Clarity On? (Interactive Self-Selector) */}
+      {/* 03: What Can We Help You With? / Where are you seeking clarity on? */}
       <ClaritySelector 
         onOpenBooking={onOpenBooking} 
       />
 
-      {/* 04: Why A Divine Talk? (The 4 Pillars of Trust) */}
-      <WhyTrustSection 
-        onNavigateWhyAdt={() => onNavigate('/why-adt')} 
+      {/* 04: Simple, Private, Powerful / How Your Divine Talk Consultation Works */}
+      <ProcessTimeline 
+        onOpenBooking={onOpenBooking} 
       />
 
-      {/* 05: Meet The Founders */}
+      {/* 05: Meet The Founders / The People Behind A Divine Talk */}
       <FoundersSection 
         onOpenBooking={onOpenBooking} 
         onNavigateHealing={() => onNavigate('/healing')} 
       />
 
-      {/* 06: How It Works (3-Step Timeline) */}
-      <ProcessTimeline 
-        onOpenBooking={onOpenBooking} 
-      />
-
-      {/* 07: A Sacred Healing (Sanctuary Transition) */}
+      {/* 06: A Sacred Healing Banner */}
       <SacredHealingPreview 
         onNavigateHealing={() => onNavigate('/healing')} 
-        onOpenBooking={onOpenBooking} 
       />
 
-      {/* 08: The Five Dimensions of Healing */}
-      <DimensionsWheel />
-
-      {/* 09: Testimonials */}
+      {/* 07: Client Experiences / Words from Those Who Found Clarity */}
       <TestimonialsCarousel />
 
-      {/* 10: FAQ */}
-      <FaqAccordion />
-
-      {/* 11: Final Closing CTA */}
-      <ClosingCTA 
+      {/* 08: Frequently Asked Questions / Answers to Common Questions */}
+      <FaqAccordion 
         onOpenBooking={onOpenBooking} 
-        onNavigateHealing={() => onNavigate('/healing')} 
       />
     </div>
   );

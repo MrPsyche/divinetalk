@@ -1,85 +1,72 @@
 import React from 'react';
-import { ArrowRight, Compass, Feather, ShieldCheck } from 'lucide-react';
-import SectionHeader from './SectionHeader';
+import { Sun, Heart, Sprout } from 'lucide-react';
 
-export default function PhilosophySection({ onNavigateWhyAdt }) {
+export default function PhilosophySection() {
   return (
-    <section className="py-24 sm:py-32 bg-ivory-200 text-sacred-950 relative overflow-hidden">
-      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 relative z-10">
-        
-        {/* Section Header */}
-        <SectionHeader
-          badge="Our Philosophy"
-          title="Some answers don’t need more information. They need a clearer perspective."
-          subtitle="In an overwhelmed world, solving our problems doesn't require collecting more birth charts or endless backstories. True clarity begins when we see the root cause."
-          theme="light"
-          centered={true}
-        />
-
-        {/* 3 Open Editorial Columns — No Cards, No Borders */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 lg:gap-14 mt-16 sm:mt-20">
+    <section className="py-20 lg:py-24 bg-[#F6F3EC] text-[#2D3E40] relative">
+      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
           
-          {/* Column 1 */}
-          <div className="space-y-4">
-            <div className="flex items-center gap-3 text-sacred-700">
-              <Compass size={24} className="text-sacred-600" />
-              <span className="text-xs uppercase tracking-[0.2em] font-semibold text-gold-700">
-                01 • Clarity
-              </span>
-            </div>
-            <h3 className="text-2xl font-semibold text-sacred-950">
-              The Root-Cause Principle
-            </h3>
-            <p className="text-base text-sacred-800/80 leading-relaxed font-normal">
-              A stalled career, relationship conflict, or persistent financial blocks are rarely isolated events. They are symptoms of deeper energetic patterns. We reveal the core 'why' so lasting change can occur.
+          {/* Left Column (5 cols) */}
+          <div className="lg:col-span-5 space-y-4 text-left">
+            <span className="text-xs uppercase tracking-[0.2em] text-[#1B6B75] font-semibold block">
+              Our Philosophy
+            </span>
+            
+            <h2 className="text-3xl sm:text-4xl font-bold leading-tight text-[#083B40]">
+              Some answers don't need more information. They need a clearer perspective.
+            </h2>
+
+            <p className="text-sm sm:text-base text-[#506062] font-normal leading-relaxed pt-1">
+              A Divine Talk goes beyond prediction. It helps you understand the root cause of your situation and see the path forward with clarity, so you can make empowered decisions.
             </p>
           </div>
 
-          {/* Column 2 */}
-          <div className="space-y-4">
-            <div className="flex items-center gap-3 text-sacred-700">
-              <Feather size={24} className="text-gold-600" />
-              <span className="text-xs uppercase tracking-[0.2em] font-semibold text-gold-700">
-                02 • Guidance
-              </span>
+          {/* Right Column (7 cols): 3 Benefit Items with Vertical Dividers */}
+          <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-6 divide-y sm:divide-y-0 sm:divide-x divide-[#E2DCD2] text-center">
+            
+            {/* Item 1: Clarity */}
+            <div className="space-y-3 pt-6 sm:pt-0 sm:px-4">
+              <div className="flex justify-center text-[#C9A84E]">
+                <Sun size={28} />
+              </div>
+              <h3 className="text-lg font-bold text-[#083B40]">
+                Clarity
+              </h3>
+              <p className="text-xs sm:text-sm text-[#6B7C7E] font-normal leading-relaxed">
+                Understand the real situation at its core.
+              </p>
             </div>
-            <h3 className="text-2xl font-semibold text-sacred-950">
-              Zero Personal Data Required
-            </h3>
-            <p className="text-base text-sacred-800/80 leading-relaxed font-normal">
-              Authentic spiritual intuition does not depend on reading your biography or calculating horoscope charts. It is an immediate intuitive perception, preserving your complete personal privacy.
-            </p>
-          </div>
 
-          {/* Column 3 */}
-          <div className="space-y-4">
-            <div className="flex items-center gap-3 text-sacred-700">
-              <ShieldCheck size={24} className="text-sacred-600" />
-              <span className="text-xs uppercase tracking-[0.2em] font-semibold text-gold-700">
-                03 • Growth
-              </span>
+            {/* Item 2: Guidance */}
+            <div className="space-y-3 pt-6 sm:pt-0 sm:px-4">
+              <div className="flex justify-center text-[#C9A84E]">
+                <Heart size={28} />
+              </div>
+              <h3 className="text-lg font-bold text-[#083B40]">
+                Guidance
+              </h3>
+              <p className="text-xs sm:text-sm text-[#6B7C7E] font-normal leading-relaxed">
+                Receive intuitive insights that make sense.
+              </p>
             </div>
-            <h3 className="text-2xl font-semibold text-sacred-950">
-              Personal Sovereignty & Free Will
-            </h3>
-            <p className="text-base text-sacred-800/80 leading-relaxed font-normal">
-              Guidance is not fixed destiny. We provide you with unclouded perspective and practical clarity so you can exercise your own free will and shape your outcome with confidence.
-            </p>
+
+            {/* Item 3: Growth */}
+            <div className="space-y-3 pt-6 sm:pt-0 sm:px-4">
+              <div className="flex justify-center text-[#C9A84E]">
+                <Sprout size={28} />
+              </div>
+              <h3 className="text-lg font-bold text-[#083B40]">
+                Growth
+              </h3>
+              <p className="text-xs sm:text-sm text-[#6B7C7E] font-normal leading-relaxed">
+                Move forward with confidence and peace.
+              </p>
+            </div>
+
           </div>
 
         </div>
-
-        {/* Read More Link */}
-        <div className="mt-16 text-center">
-          <button
-            onClick={onNavigateWhyAdt}
-            className="inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-sacred-900 hover:text-gold-700 transition-colors group"
-          >
-            <span>Learn what makes A Divine Talk different</span>
-            <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
-          </button>
-        </div>
-
       </div>
     </section>
   );

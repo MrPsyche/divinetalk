@@ -1,89 +1,142 @@
 import React from 'react';
-import { ArrowRight, Play } from 'lucide-react';
+import { ArrowRight, Play, Shield, Compass, Sparkles, MessageCircle } from 'lucide-react';
 import { BRAND_ASSETS } from '../data/siteContent';
 
 export default function HeroSection({ onOpenBooking, onScrollToSection }) {
-  return (
-    <section className="relative min-h-[88vh] flex items-center pt-32 pb-20 lg:py-36 bg-sacred-950 text-ivory-100 overflow-hidden">
-      
-      {/* Subtle Atmospheric Light */}
-      <div className="absolute top-1/4 -left-32 w-[500px] h-[500px] rounded-full bg-sacred-600/15 blur-[120px] pointer-events-none"></div>
-      <div className="absolute bottom-10 right-0 w-[450px] h-[450px] rounded-full bg-gold-500/10 blur-[140px] pointer-events-none"></div>
+  const categories = [
+    "Relationships",
+    "Career",
+    "Business",
+    "Finances",
+    "Legal Matters",
+    "Life Decisions"
+  ];
 
+  return (
+    <section className="relative pt-32 pb-20 lg:pt-36 lg:pb-28 bg-[#F9F7F1] text-[#2D3E40] overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 relative z-10 w-full">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
           
-          {/* Left Column: Editorial Typography & CTAs (7 cols) */}
-          <div className="lg:col-span-7 space-y-8 text-left">
+          {/* Left Column (7 cols) */}
+          <div className="lg:col-span-7 space-y-7 text-left">
             
             {/* Small Label */}
-            <span className="text-xs uppercase tracking-[0.25em] text-gold-400 font-semibold block">
+            <span className="text-xs uppercase tracking-[0.2em] text-[#1B6B75] font-semibold block">
               A Divine Talk
             </span>
 
             {/* Main Headline */}
-            <h1 className="text-4xl sm:text-5xl lg:text-[3.65rem] font-semibold leading-[1.12] tracking-tight text-ivory-50">
+            <h1 className="text-4xl sm:text-5xl lg:text-[3.6rem] font-bold leading-[1.12] tracking-tight text-[#083B40]">
               Get Instant Answers. <br />
-              <span className="text-gold-accent font-medium">Overcome Your Problems.</span>
+              <span>Overcome Your Problems.</span>
             </h1>
 
             {/* Supporting Description */}
-            <p className="text-base sm:text-lg text-ivory-200/85 font-normal leading-relaxed max-w-2xl">
-              A private visionary conversation designed to bring clarity to the questions that matter most — without requiring your name, date of birth, or personal details.
+            <p className="text-base sm:text-lg text-[#506062] font-normal leading-relaxed max-w-xl">
+              A private visionary conversation designed to bring clarity to the questions that matter most — without your name, date of birth, or any personal details.
             </p>
 
-            {/* Actions */}
+            {/* 3 Mini Features Row */}
+            <div className="grid grid-cols-3 gap-4 pt-1 max-w-lg">
+              <div className="flex items-start gap-2.5">
+                <div className="p-1.5 rounded-full bg-white text-[#C9A84E] shadow-sm flex-shrink-0 mt-0.5">
+                  <Shield size={16} />
+                </div>
+                <div>
+                  <h4 className="text-xs font-semibold text-[#083B40] block">100% Private</h4>
+                  <span className="text-[11px] text-[#6B7C7E] block leading-tight">No personal data</span>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-2.5">
+                <div className="p-1.5 rounded-full bg-white text-[#C9A84E] shadow-sm flex-shrink-0 mt-0.5">
+                  <Compass size={16} />
+                </div>
+                <div>
+                  <h4 className="text-xs font-semibold text-[#083B40] block">Root-Cause Guidance</h4>
+                  <span className="text-[11px] text-[#6B7C7E] block leading-tight">Beyond prediction</span>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-2.5">
+                <div className="p-1.5 rounded-full bg-white text-[#C9A84E] shadow-sm flex-shrink-0 mt-0.5">
+                  <Sparkles size={16} />
+                </div>
+                <div>
+                  <h4 className="text-xs font-semibold text-[#083B40] block">Your Free Will</h4>
+                  <span className="text-[11px] text-[#6B7C7E] block leading-tight">Always respected</span>
+                </div>
+              </div>
+            </div>
+
+            {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-2">
               <button
                 onClick={() => onOpenBooking({ serviceName: '6th Sense Visionary Consultation', practitioner: 'HimaniK Dograa' })}
-                className="btn-primary-gold"
+                className="btn-pill-teal"
               >
                 <span>Book Your Divine Talk</span>
-                <ArrowRight size={16} />
+                <ArrowRight size={15} />
               </button>
 
               <button
                 onClick={() => onScrollToSection('how-it-works')}
-                className="btn-ghost-dark"
+                className="btn-pill-outline"
               >
-                <Play size={14} className="text-gold-400 fill-gold-400" />
                 <span>How It Works</span>
+                <div className="w-5 h-5 rounded-full bg-[#083B40] text-white flex items-center justify-center ml-1">
+                  <Play size={9} className="ml-0.5 fill-white" />
+                </div>
               </button>
             </div>
 
-            {/* Simple Subtext */}
-            <div className="pt-4 text-xs text-ivory-400 font-normal tracking-wide">
-              Love & Relationships • Career & Purpose • Business • Finances • Legal Matters • Life Decisions
+            {/* Trusted By Pill Tags */}
+            <div className="pt-4 space-y-2">
+              <span className="text-xs text-[#7A8B8D] font-normal block">
+                Trusted by hundreds of individuals seeking clarity in:
+              </span>
+              <div className="flex flex-wrap gap-2">
+                {categories.map((cat) => (
+                  <button
+                    key={cat}
+                    onClick={() => onScrollToSection('services')}
+                    className="text-xs px-3.5 py-1.5 rounded-full bg-white text-[#506062] border border-[#E5E0D6] hover:border-[#083B40] hover:text-[#083B40] transition-colors shadow-2xs"
+                  >
+                    {cat}
+                  </button>
+                ))}
+              </div>
             </div>
 
           </div>
 
-          {/* Right Column: Himani's Portrait with Integrated Privacy Statement (5 cols) */}
-          <div className="lg:col-span-5 flex justify-center lg:justify-end">
+          {/* Right Column: Himani's Portrait with Floating White Card (5 cols) */}
+          <div className="lg:col-span-5 relative flex justify-center lg:justify-end">
             <div className="relative w-full max-w-md">
               
               {/* Natural Image Container */}
-              <div className="relative rounded-2xl overflow-hidden shadow-2xl bg-sacred-900">
-                <div className="aspect-[4/5] relative">
-                  <img
-                    src={BRAND_ASSETS.himaniHero}
-                    alt="HimaniK Dograa — Lead Visionary & Guide"
-                    className="w-full h-full object-cover object-top"
-                  />
-                  
-                  {/* Subtle Gradient at Bottom */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-sacred-950/80 via-transparent to-transparent"></div>
-                  
-                  {/* Integrated Signature Brand Statement */}
-                  <div className="absolute bottom-6 inset-x-6 p-5 rounded-xl bg-sacred-950/85 backdrop-blur-md">
-                    <span className="text-[11px] uppercase tracking-[0.2em] text-gold-400 font-semibold block mb-1">
-                      Pure Intuitive Connection
-                    </span>
-                    <p className="text-sm font-semibold text-ivory-50 tracking-wide">
-                      NO NAME. NO DATE OF BIRTH. NO PERSONAL DETAILS.
-                    </p>
-                    <p className="text-xs text-ivory-300/80 font-normal mt-1">
-                      Himani’s visionary gift reveals your solutions instantly through direct energetic perception.
+              <div className="relative rounded-3xl overflow-hidden shadow-xl bg-white aspect-[4/5]">
+                <img
+                  src={BRAND_ASSETS.himaniHero}
+                  alt="HimaniK Dograa"
+                  className="w-full h-full object-cover object-top"
+                />
+              </div>
+
+              {/* Floating White Reassurance Card on Bottom-Left */}
+              <div className="absolute -bottom-6 -left-6 sm:-left-8 bg-white p-5 sm:p-6 rounded-2xl shadow-xl border border-gray-100/80 max-w-[280px] sm:max-w-xs text-left">
+                <div className="flex items-start gap-3">
+                  <div className="p-2 rounded-xl bg-[#EAF2F3] text-[#1B6B75] flex-shrink-0">
+                    <Shield size={18} />
+                  </div>
+                  <div className="space-y-1">
+                    <h4 className="text-xs font-bold text-[#083B40] tracking-tight uppercase leading-snug">
+                      NO NAME.<br />
+                      NO DATE OF BIRTH.<br />
+                      NO PERSONAL DETAILS.
+                    </h4>
+                    <p className="text-[11px] text-[#6B7C7E] font-normal leading-relaxed pt-1">
+                      Just you, your concern, and a conversation that brings clarity.
                     </p>
                   </div>
                 </div>
@@ -94,7 +147,6 @@ export default function HeroSection({ onOpenBooking, onScrollToSection }) {
 
         </div>
       </div>
-
     </section>
   );
 }

@@ -5,8 +5,8 @@
 @layer base {
   html {
     font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    color: #162528;
-    background-color: #F5F1E8;
+    color: #2D3E40;
+    background-color: #FFFFFF;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
   }
@@ -15,7 +15,8 @@
     font-family: 'Poppins', sans-serif;
     font-size: 1rem;
     line-height: 1.7;
-    color: #162528;
+    color: #2D3E40;
+    background-color: #FFFFFF;
   }
 
   /* Custom subtle scrollbar */
@@ -23,126 +24,71 @@
     width: 6px;
   }
   ::-webkit-scrollbar-track {
-    background: #031E20;
+    background: #F9F7F1;
   }
   ::-webkit-scrollbar-thumb {
-    background: #147C85;
+    background: #083B40;
     border-radius: 3px;
   }
-  ::-webkit-scrollbar-thumb:hover {
-    background: #C9A84E;
-  }
 }
 
-@layer utilities {
-  /* Subtle Atmospheric Tinting without borders */
-  .bg-sanctuary-dark {
-    background-color: #031E20;
-  }
-
-  .bg-sanctuary-teal {
-    background-color: #073E42;
-  }
-
-  .bg-sanctuary-light {
-    background-color: #F5F1E8;
-  }
-
-  .bg-sanctuary-ivory {
-    background-color: #FAF8F3;
-  }
-
-  /* Clean readable text utilities */
-  .text-gold-accent {
-    color: #C9A84E;
-  }
-
-  .text-sacred-dark {
-    color: #031E20;
-  }
-
-  .text-readable-muted {
-    color: #4A5B5E;
-  }
-}
-
-/* Primary Button Styling — Refined, human, comfortable */
-.btn-primary-teal {
+/* Button utility classes matching the mockup exactly */
+.btn-pill-teal {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  background-color: #073E42;
+  background-color: #083B40;
   color: #FFFFFF;
   font-family: 'Poppins', sans-serif;
   font-weight: 500;
-  font-size: 0.9375rem;
-  padding: 0.875rem 1.75rem;
-  border-radius: 0.5rem;
-  transition: all 0.25s ease;
-  box-shadow: 0 4px 14px rgba(7, 62, 66, 0.15);
+  font-size: 0.875rem;
+  padding: 0.75rem 1.75rem;
+  border-radius: 9999px;
+  transition: all 0.2s ease;
 }
-.btn-primary-teal:hover {
+.btn-pill-teal:hover {
   background-color: #0B555A;
   transform: translateY(-1px);
-  box-shadow: 0 6px 20px rgba(7, 62, 66, 0.22);
+  box-shadow: 0 4px 12px rgba(8, 59, 64, 0.2);
 }
 
-.btn-primary-gold {
+.btn-pill-gold {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  background-color: #C9A84E;
-  color: #031E20;
+  background-color: #D4AF37;
+  color: #083B40;
   font-family: 'Poppins', sans-serif;
   font-weight: 600;
-  font-size: 0.9375rem;
-  padding: 0.875rem 1.75rem;
-  border-radius: 0.5rem;
-  transition: all 0.25s ease;
-  box-shadow: 0 4px 16px rgba(201, 168, 78, 0.25);
+  font-size: 0.875rem;
+  padding: 0.75rem 1.75rem;
+  border-radius: 9999px;
+  transition: all 0.2s ease;
 }
-.btn-primary-gold:hover {
-  background-color: #D7B94B;
+.btn-pill-gold:hover {
+  background-color: #E5BE48;
   transform: translateY(-1px);
-  box-shadow: 0 6px 22px rgba(201, 168, 78, 0.35);
+  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
 }
 
-.btn-ghost-dark {
+.btn-pill-outline {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  background-color: transparent;
-  color: #F5F1E8;
+  background-color: #FFFFFF;
+  color: #083B40;
+  border: 1px solid #E2DCD2;
   font-family: 'Poppins', sans-serif;
   font-weight: 500;
-  font-size: 0.9375rem;
-  padding: 0.875rem 1.5rem;
-  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 9999px;
   transition: all 0.2s ease;
 }
-.btn-ghost-dark:hover {
-  background-color: rgba(255, 255, 255, 0.08);
-  color: #FFFFFF;
-}
-
-.btn-ghost-light {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  background-color: transparent;
-  color: #073E42;
-  font-family: 'Poppins', sans-serif;
-  font-weight: 500;
-  font-size: 0.9375rem;
-  padding: 0.875rem 1.5rem;
-  border-radius: 0.5rem;
-  transition: all 0.2s ease;
-}
-.btn-ghost-light:hover {
-  background-color: rgba(7, 62, 66, 0.06);
-  color: #031E20;
+.btn-pill-outline:hover {
+  background-color: #F9F7F1;
+  border-color: #083B40;
 }

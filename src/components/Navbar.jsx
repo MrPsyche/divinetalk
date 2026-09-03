@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X, Volume2, VolumeX, ArrowRight } from 'lucide-react';
+import { Menu, X, ArrowRight } from 'lucide-react';
 import { BRAND_ASSETS } from '../data/siteContent';
 
-export default function Navbar({ currentPath, onNavigate, onOpenBooking, isAudioPlaying, onToggleAudio }) {
+export default function Navbar({ currentPath, onNavigate, onOpenBooking }) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -15,7 +15,6 @@ export default function Navbar({ currentPath, onNavigate, onOpenBooking, isAudio
   }, []);
 
   const navLinks = [
-    { label: 'Home', path: '/' },
     { label: 'Our Founders', path: '/#founders' },
     { label: 'Why ADT?', path: '/why-adt' },
     { label: 'Services', path: '/#services' },
@@ -31,8 +30,8 @@ export default function Navbar({ currentPath, onNavigate, onOpenBooking, isAudio
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled
-          ? 'bg-sacred-950/95 backdrop-blur-md py-4 shadow-sm'
-          : 'bg-transparent py-6'
+          ? 'bg-white/95 backdrop-blur-md py-3.5 shadow-sm border-b border-gray-100'
+          : 'bg-white/90 backdrop-blur-sm py-5'
       }`}
     >
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
@@ -41,7 +40,7 @@ export default function Navbar({ currentPath, onNavigate, onOpenBooking, isAudio
           {/* Logo */}
           <button
             onClick={() => handleLinkClick('/')}
-            className="flex items-center gap-3 text-left group focus:outline-none"
+            className="flex items-center gap-3 text-left focus:outline-none group"
           >
             <div className="w-10 h-10 rounded-full overflow-hidden flex items-center justify-center flex-shrink-0">
               <img
@@ -52,76 +51,50 @@ export default function Navbar({ currentPath, onNavigate, onOpenBooking, isAudio
             </div>
             
             <div className="flex flex-col">
-              <span className="text-lg sm:text-xl font-semibold tracking-tight text-ivory-50 group-hover:text-gold-300 transition-colors">
+              <span className="text-xl font-bold tracking-tight text-[#083B40] group-hover:text-[#0B555A] transition-colors">
                 A Divine Talk
               </span>
-              <span className="text-[10px] tracking-[0.2em] text-gold-400 uppercase font-medium">
+              <span className="text-[10px] tracking-[0.2em] text-[#C9A84E] uppercase font-semibold">
                 Heal & Grow
               </span>
             </div>
           </button>
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center gap-8">
+          <nav className="hidden md:flex items-center gap-8">
             {navLinks.map((link) => {
-              const isActive = currentPath === link.path || (link.path === '/' && currentPath === '');
+              const isActive = currentPath === link.path;
               return (
                 <button
                   key={link.label}
                   onClick={() => handleLinkClick(link.path)}
-                  className={`text-[0.9375rem] font-medium transition-colors relative py-1 focus:outline-none ${
-                    isActive
-                      ? 'text-gold-300'
-                      : 'text-ivory-200/80 hover:text-ivory-50'
+                  className={`text-[0.9375rem] font-medium transition-colors focus:outline-none ${
+                    isActive ? 'text-[#083B40] font-semibold' : 'text-[#4A5B5E] hover:text-[#083B40]'
                   }`}
                 >
-                  <span>{link.label}</span>
-                  {isActive && (
-                    <span className="absolute bottom-0 left-0 right-0 h-[2px] bg-gold-400"></span>
-                  )}
+                  {link.label}
                 </button>
               );
             })}
           </nav>
 
-          {/* Action Area: Audio Ambience + Primary CTA */}
+          {/* Primary Action Button */}
           <div className="hidden sm:flex items-center gap-4">
             <button
-              onClick={onToggleAudio}
-              title={isAudioPlaying ? "Mute Sanctuary Ambience" : "Play Gentle Sanctuary Ambience"}
-              className={`p-2 rounded-lg transition-colors flex items-center justify-center ${
-                isAudioPlaying
-                  ? 'bg-gold-500/20 text-gold-300'
-                  : 'text-ivory-200/60 hover:text-ivory-50'
-              }`}
-            >
-              {isAudioPlaying ? <Volume2 size={18} /> : <VolumeX size={18} />}
-            </button>
-
-            <button
               onClick={() => onOpenBooking({ serviceName: 'General Consultation', practitioner: 'HimaniK Dograa' })}
-              className="btn-primary-gold"
+              className="btn-pill-teal"
             >
               <span>Book Your Session</span>
-              <ArrowRight size={15} />
+              <ArrowRight size={14} />
             </button>
           </div>
 
-          {/* Mobile Menu & Audio */}
-          <div className="flex sm:hidden items-center gap-2">
-            <button
-              onClick={onToggleAudio}
-              className={`p-2 rounded-lg ${
-                isAudioPlaying ? 'bg-gold-500/20 text-gold-300' : 'text-ivory-200/60'
-              }`}
-            >
-              {isAudioPlaying ? <Volume2 size={18} /> : <VolumeX size={18} />}
-            </button>
-
+          {/* Mobile Hamburger */}
+          <div className="flex sm:hidden items-center">
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 text-ivory-100 hover:text-gold-300 focus:outline-none"
-              aria-label="Toggle Navigation Menu"
+              className="p-2 text-[#083B40] focus:outline-none"
+              aria-label="Toggle Menu"
             >
               {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
@@ -130,32 +103,34 @@ export default function Navbar({ currentPath, onNavigate, onOpenBooking, isAudio
         </div>
       </div>
 
-      {/* Mobile Menu Drawer */}
+      {/* Mobile Menu */}
       {mobileMenuOpen && (
-        <div className="lg:hidden fixed inset-x-0 top-[76px] bg-sacred-950 px-6 py-8 shadow-2xl transition-all">
-          <div className="flex flex-col space-y-6">
+        <div className="md:hidden bg-white border-b border-gray-100 px-6 py-6 shadow-xl">
+          <div className="flex flex-col space-y-4">
+            <button
+              onClick={() => handleLinkClick('/')}
+              className="text-left text-base font-medium text-[#083B40]"
+            >
+              Home
+            </button>
             {navLinks.map((link) => (
               <button
                 key={link.label}
                 onClick={() => handleLinkClick(link.path)}
-                className="text-left text-xl font-medium text-ivory-100 hover:text-gold-300 transition-colors"
+                className="text-left text-base font-medium text-[#4A5B5E] hover:text-[#083B40]"
               >
                 {link.label}
               </button>
             ))}
-
-            <div className="pt-6 border-t border-sacred-900 flex flex-col gap-3">
-              <span className="text-xs text-gold-300/80 font-medium">
-                100% Confidential • Zero Personal Data Required
-              </span>
+            <div className="pt-4 border-t border-gray-100">
               <button
                 onClick={() => {
                   setMobileMenuOpen(false);
                   onOpenBooking({ serviceName: 'General Consultation', practitioner: 'HimaniK Dograa' });
                 }}
-                className="btn-primary-gold w-full text-center"
+                className="btn-pill-teal w-full text-center"
               >
-                Book Your Divine Talk
+                Book Your Session
               </button>
             </div>
           </div>
