@@ -5,6 +5,8 @@ import BookingModal from './components/BookingModal';
 import HomePage from './pages/HomePage';
 import WhyAdtPage from './pages/WhyAdtPage';
 import BlogPage from './pages/BlogPage';
+import BlogPostDetail from './pages/BlogPostDetail';
+import BlogAdminPage from './pages/BlogAdminPage';
 
 export default function App() {
   const [currentPath, setCurrentPath] = useState(window.location.pathname || '/');
@@ -63,14 +65,28 @@ export default function App() {
 
   // Render Page Content based on Path
   const renderPage = () => {
-    if (currentPath === '/why-vbh' || currentPath === '/why-adt') {
+    // Admin Studio
+    if (currentPath === '/admin' || currentPath === '/admin/blogs') {
       return (
-        <WhyAdtPage
-          onOpenBooking={handleOpenBooking}
+        <BlogAdminPage
           onNavigate={handleNavigate}
         />
       );
     }
+
+    // Dynamic Single Blog Post Route: /blog/:slug
+    if (currentPath.startsWith('/blog/') && currentPath.length > 6) {
+      const slug = currentPath.replace('/blog/', '').split('?')[0].split('#')[0];
+      return (
+        <BlogPostDetail
+          slug={slug}
+          onNavigate={handleNavigate}
+          onOpenBooking={handleOpenBooking}
+        />
+      );
+    }
+
+    // All Blogs
     if (currentPath === '/blog') {
       return (
         <BlogPage
@@ -79,6 +95,17 @@ export default function App() {
         />
       );
     }
+
+    // Why VBH / Why ADT
+    if (currentPath === '/why-vbh' || currentPath === '/why-adt') {
+      return (
+        <WhyAdtPage
+          onOpenBooking={handleOpenBooking}
+          onNavigate={handleNavigate}
+        />
+      );
+    }
+
     // Default to Home
     return (
       <HomePage
@@ -87,6 +114,8 @@ export default function App() {
       />
     );
   };
+
+  const isAdminPage = currentPath === '/admin' || currentPath === '/admin/blogs';
 
   return (
     <div className="min-h-screen flex flex-col bg-[#F9F7F1] text-[#2D3E40] font-sans selection:bg-[#083B40] selection:text-[#FAF0D7]">
@@ -103,11 +132,13 @@ export default function App() {
         {renderPage()}
       </main>
 
-      {/* Unified Luxury Footer */}
-      <Footer
-        onNavigate={handleNavigate}
-        onOpenBooking={handleOpenBooking}
-      />
+      {/* Unified Footer */}
+      {!isAdminPage && (
+        <Footer
+          onNavigate={handleNavigate}
+          onOpenBooking={handleOpenBooking}
+        />
+      )}
 
       {/* Booking Modal */}
       <BookingModal
