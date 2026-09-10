@@ -1,13 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import { 
-  Plus, Edit3, Trash2, Eye, Image as ImageIcon, CheckCircle, 
-  ArrowLeft, RefreshCw, Upload, FileText, Sparkles, BookOpen, AlertCircle
+  Plus, Edit3, Trash2, Eye, CheckCircle, ArrowLeft, RefreshCw, 
+  Upload, Sparkles, BookOpen, Lock, LogOut, Key, User, ShieldAlert
 } from 'lucide-react';
 import { 
   getBlogPosts, createBlogPost, updateBlogPost, deleteBlogPost, resetBlogPostsToDefault 
 } from '../utils/blogStorage';
+import { BRAND_ASSETS } from '../data/siteContent';
+
+const AUTH_KEY = 'vbh_admin_authenticated_v1';
+const DEFAULT_ADMIN_EMAIL = 'admin@visionsbyhimani.com';
+const DEFAULT_ADMIN_PASS = 'vbh2026';
 
 export default function BlogAdminPage({ onNavigate }) {
+  // Authentication State
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [loginEmail, setLoginEmail] = useState('');
+  const [loginPassword, setLoginPassword] = useState('');
+  const [loginError, setLoginError] = useState('');
+
+  // Admin Studio State
   const [posts, setPosts] = useState([]);
   const [activeTab, setActiveTab] = useState('list'); // 'list' | 'editor'
   const [editingPostId, setEditingPostId] = useState(null);
@@ -28,12 +40,43 @@ export default function BlogAdminPage({ onNavigate }) {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    loadPosts();
+    // Check existing auth
+    const savedAuth = sessionStorage.getItem(AUTH_KEY) || localStorage.getItem(AUTH_KEY);
+    if (savedAuth === 'true') {
+      setIsAuthenticated(true);
+      loadPosts();
+    }
   }, []);
 
   const loadPosts = () => {
     const list = getBlogPosts();
     setPosts(list);
+  };
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+    setLoginError('');
+
+    const cleanEmail = loginEmail.trim().toLowerCase();
+    const cleanPass = loginPassword.trim();
+
+    if (
+      (cleanEmail === DEFAULT_ADMIN_EMAIL || cleanEmail === 'admin' || cleanEmail === 'himani') &&
+      cleanPass === DEFAULT_ADMIN_PASS
+    ) {
+      setIsAuthenticated(true);
+      sessionStorage.setItem(AUTH_KEY, 'true');
+      localStorage.setItem(AUTH_KEY, 'true');
+      loadPosts();
+    } else {
+      setLoginError('Invalid admin email or password. Please check your credentials.');
+    }
+  };
+
+  const handleLogout = () => {
+    setIsAuthenticated(false);
+    sessionStorage.removeItem(AUTH_KEY);
+    localStorage.removeItem(AUTH_KEY);
   };
 
   const showToast = (msg) => {
@@ -130,6 +173,113 @@ export default function BlogAdminPage({ onNavigate }) {
     }));
   };
 
+  // -------------------------------------------------------------
+  // VIEW 1: SECURE LOGIN SCREEN (IF NOT AUTHENTICATED)
+  // -------------------------------------------------------------
+  if (!isAuthenticated) {
+    return (
+      <div className="pt-28 lg:pt-36 pb-24 bg-[#F9F7F1] text-[#2D3E40] min-h-screen flex items-center justify-center px-6">
+        <div className="w-full max-w-md bg-white p-8 sm:p-10 rounded-3xl shadow-xl border border-[#EFEBE3] text-left space-y-6">
+          
+          {/* Header */}
+          <div className="text-center space-y-3">
+            <div className="w-14 h-14 rounded-2xl bg-[#FAF0D7] text-[#B88E28] flex items-center justify-center mx-auto shadow-xs">
+              <Lock size={26} />
+            </div>
+
+            <div>
+              <span className="text-xs uppercase tracking-[0.2em] font-bold text-[#1B6B75] block">
+                VBH Studio
+              </span>
+              <h1 className="text-2xl font-bold text-[#083B40]">
+                Admin Authentication
+              </h1>
+            </div>
+
+            <p className="text-xs text-[#6B7C7E]">
+              Enter your admin credentials to access the blog publishing manager.
+            </p>
+          </div>
+
+          {/* Error Banner */}
+          {loginError && (
+            <div className="p-3.5 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs flex items-center gap-2">
+              <ShieldAlert size={16} className="flex-shrink-0" />
+              <span>{loginError}</span>
+            </div>
+          )}
+
+          {/* Login Form */}
+          <form onSubmit={handleLogin} className="space-y-4">
+            
+            <div className="space-y-1.5">
+              <label className="text-xs uppercase tracking-wider font-bold text-[#083B40] block">
+                Admin Email / Username
+              </label>
+              <div className="relative">
+                <User size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
+                <input
+                  type="text"
+                  required
+                  value={loginEmail}
+                  onChange={(e) => setLoginEmail(e.target.value)}
+                  placeholder="admin@visionsbyhimani.com"
+                  className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-[#083B40] transition-colors"
+                />
+              </div>
+            </div>
+
+            <div className="space-y-1.5">
+              <label className="text-xs uppercase tracking-wider font-bold text-[#083B40] block">
+                Admin Password
+              </label>
+              <div className="relative">
+                <Key size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
+                <input
+                  type="password"
+                  required
+                  value={loginPassword}
+                  onChange={(e) => setLoginPassword(e.target.value)}
+                  placeholder="••••••••"
+                  className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-[#083B40] transition-colors"
+                />
+              </div>
+            </div>
+
+            <div className="pt-2">
+              <button
+                type="submit"
+                className="btn-pill-teal w-full text-center py-3 text-sm cursor-pointer shadow-md"
+              >
+                <span>Unlock Admin Studio</span>
+              </button>
+            </div>
+
+          </form>
+
+          {/* Default Credentials Hint Box */}
+          <div className="pt-4 border-t border-gray-100 text-center space-y-1">
+            <span className="text-[11px] text-[#7A8B8D] block">
+              Default Credentials: <strong>admin</strong> / Password: <strong>vbh2026</strong>
+            </span>
+            <button
+              type="button"
+              onClick={() => onNavigate('/')}
+              className="text-xs font-semibold text-[#083B40] hover:text-[#1B6B75] inline-flex items-center gap-1 pt-2 cursor-pointer"
+            >
+              <ArrowLeft size={13} />
+              <span>Return to Public Website</span>
+            </button>
+          </div>
+
+        </div>
+      </div>
+    );
+  }
+
+  // -------------------------------------------------------------
+  // VIEW 2: AUTHENTICATED ADMIN DASHBOARD
+  // -------------------------------------------------------------
   return (
     <div className="pt-28 lg:pt-32 pb-24 bg-[#F9F7F1] text-[#2D3E40] min-h-screen">
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
@@ -150,7 +300,7 @@ export default function BlogAdminPage({ onNavigate }) {
                 VBH Content Studio
               </span>
               <span className="bg-[#FAF0D7] text-[#B88E28] text-[10px] font-bold px-2 py-0.5 rounded-full border border-[#E9D9B2]">
-                Admin Panel
+                Admin Verified
               </span>
             </div>
             <h1 className="text-2xl sm:text-3xl font-bold text-[#083B40]">
@@ -161,7 +311,7 @@ export default function BlogAdminPage({ onNavigate }) {
           <div className="flex items-center gap-3">
             <button
               onClick={() => onNavigate('/blog')}
-              className="btn-pill-outline text-xs py-2 px-4 cursor-pointer"
+              className="btn-pill-outline text-xs py-2 px-3.5 cursor-pointer"
             >
               <Eye size={14} />
               <span>View Public Blog</span>
@@ -184,6 +334,15 @@ export default function BlogAdminPage({ onNavigate }) {
                 <span>Back to Articles</span>
               </button>
             )}
+
+            {/* Log Out Button */}
+            <button
+              onClick={handleLogout}
+              className="p-2 rounded-full bg-white border border-gray-200 text-gray-600 hover:text-red-600 hover:bg-red-50 hover:border-red-200 transition-all cursor-pointer shadow-2xs"
+              title="Log Out of Admin"
+            >
+              <LogOut size={16} />
+            </button>
           </div>
         </div>
 
