@@ -70,7 +70,7 @@ export default function FaqAccordion({ onOpenBooking }) {
             </div>
 
             <button
-              onClick={() => onOpenBooking({ serviceName: 'General Consultation', practitioner: 'HimaniK Dograa' })}
+              onClick={() => onOpenBooking({ serviceName: 'Visionary Consultation with Himani', practitioner: 'HimaniK Dograa' })}
               className="btn-pill-teal text-xs py-2.5 px-5"
             >
               <span>Book Your Session</span>

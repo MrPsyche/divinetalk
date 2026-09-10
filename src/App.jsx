@@ -2,21 +2,16 @@ import React, { useState, useEffect } from 'react';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import BookingModal from './components/BookingModal';
-import { useAudioAmbience } from './components/AudioAmbience';
 import HomePage from './pages/HomePage';
 import WhyAdtPage from './pages/WhyAdtPage';
-import HealingPage from './pages/HealingPage';
+import BlogPage from './pages/BlogPage';
 
 export default function App() {
   const [currentPath, setCurrentPath] = useState(window.location.pathname || '/');
-  const [isAudioPlaying, setIsAudioPlaying] = useState(false);
   const [bookingModalState, setBookingModalState] = useState({
     isOpen: false,
     data: null,
   });
-
-  // Activate audio hook
-  useAudioAmbience(isAudioPlaying);
 
   // Synchronize browser history and hash navigation
   useEffect(() => {
@@ -66,13 +61,9 @@ export default function App() {
     });
   };
 
-  const toggleAudio = () => {
-    setIsAudioPlaying((prev) => !prev);
-  };
-
   // Render Page Content based on Path
   const renderPage = () => {
-    if (currentPath === '/why-adt') {
+    if (currentPath === '/why-vbh' || currentPath === '/why-adt') {
       return (
         <WhyAdtPage
           onOpenBooking={handleOpenBooking}
@@ -80,9 +71,9 @@ export default function App() {
         />
       );
     }
-    if (currentPath === '/healing') {
+    if (currentPath === '/blog') {
       return (
-        <HealingPage
+        <BlogPage
           onOpenBooking={handleOpenBooking}
           onNavigate={handleNavigate}
         />
@@ -98,15 +89,13 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-ivory-200 text-obsidian-900 font-sans selection:bg-sacred-700 selection:text-gold-200">
+    <div className="min-h-screen flex flex-col bg-[#F9F7F1] text-[#2D3E40] font-sans selection:bg-[#083B40] selection:text-[#FAF0D7]">
       
       {/* Sticky Navigation */}
       <Navbar
         currentPath={currentPath}
         onNavigate={handleNavigate}
         onOpenBooking={handleOpenBooking}
-        isAudioPlaying={isAudioPlaying}
-        onToggleAudio={toggleAudio}
       />
 
       {/* Main Routed Content */}
@@ -120,7 +109,7 @@ export default function App() {
         onOpenBooking={handleOpenBooking}
       />
 
-      {/* Booking Pre-Flight Modal */}
+      {/* Booking Modal */}
       <BookingModal
         isOpen={bookingModalState.isOpen}
         onClose={handleCloseBooking}

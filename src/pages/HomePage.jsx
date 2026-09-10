@@ -1,10 +1,11 @@
 import React from 'react';
 import HeroSection from '../components/HeroSection';
+import WhyVbhSection from '../components/WhyVbhSection';
 import PhilosophySection from '../components/PhilosophySection';
 import ClaritySelector from '../components/ClaritySelector';
+import RealLifeSituations from '../components/RealLifeSituations';
 import ProcessTimeline from '../components/ProcessTimeline';
 import FoundersSection from '../components/FoundersSection';
-import SacredHealingPreview from '../components/SacredHealingPreview';
 import TestimonialsCarousel from '../components/TestimonialsCarousel';
 import FaqAccordion from '../components/FaqAccordion';
 
@@ -18,40 +19,44 @@ export default function HomePage({ onOpenBooking, onNavigate }) {
 
   return (
     <div className="space-y-0">
-      {/* 01: Hero Section */}
+      {/* 01: Hero Section with New Himani Portrait & Golden Floating Box */}
       <HeroSection 
         onOpenBooking={onOpenBooking} 
         onScrollToSection={handleScrollToSection} 
       />
 
-      {/* 02: Our Philosophy */}
+      {/* 02: New Section — Why VBH Feels Different */}
+      <WhyVbhSection />
+
+      {/* 03: Our Philosophy */}
       <PhilosophySection />
 
-      {/* 03: What Can We Help You With? / Where are you seeking clarity on? */}
+      {/* 04: Services — Areas of Clarity */}
       <ClaritySelector 
         onOpenBooking={onOpenBooking} 
       />
 
-      {/* 04: Simple, Private, Powerful / How Your Divine Talk Consultation Works */}
+      {/* 05: Experience Across Real-Life Situations Showcase */}
+      <div id="situations">
+        <RealLifeSituations 
+          onOpenBooking={onOpenBooking} 
+        />
+      </div>
+
+      {/* 06: How It Works (1. Book, 2. Conversation, 3. Get Clarity) */}
       <ProcessTimeline 
         onOpenBooking={onOpenBooking} 
       />
 
-      {/* 05: Meet The Founders / The People Behind A Divine Talk */}
+      {/* 07: Meet The Founders (Himani Primary Practitioner & Karan Strategic Mind) */}
       <FoundersSection 
         onOpenBooking={onOpenBooking} 
-        onNavigateHealing={() => onNavigate('/healing')} 
       />
 
-      {/* 06: A Sacred Healing Banner */}
-      <SacredHealingPreview 
-        onNavigateHealing={() => onNavigate('/healing')} 
-      />
-
-      {/* 07: Client Experiences / Words from Those Who Found Clarity */}
+      {/* 08: Client Experiences & Social Testimonials */}
       <TestimonialsCarousel />
 
-      {/* 08: Frequently Asked Questions / Answers to Common Questions */}
+      {/* 09: Frequently Asked Questions */}
       <FaqAccordion 
         onOpenBooking={onOpenBooking} 
       />

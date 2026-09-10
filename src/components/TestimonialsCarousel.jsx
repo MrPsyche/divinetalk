@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ChevronLeft, ChevronRight, Quote, ArrowRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Quote, ArrowRight, Video } from 'lucide-react';
 import { TESTIMONIALS } from '../data/siteContent';
 
 export default function TestimonialsCarousel() {
@@ -31,17 +31,19 @@ export default function TestimonialsCarousel() {
             </h2>
 
             <p className="text-sm sm:text-base text-[#506062] font-normal leading-relaxed">
-              Real people. Real experiences. Real clarity.
+              Real reflections and video testimonials from our community across Instagram, YouTube, and Facebook.
             </p>
 
-            <div className="pt-2">
-              <button
-                onClick={handleNext}
-                className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#083B40] hover:text-[#1B6B75] transition-colors"
-              >
-                <span>Read all stories</span>
-                <ArrowRight size={13} />
-              </button>
+            <div className="pt-2 flex flex-wrap items-center gap-3">
+              <span className="text-xs font-semibold px-3 py-1 rounded-full bg-white border border-[#E2DCD2] text-[#083B40]">
+                📸 Instagram
+              </span>
+              <span className="text-xs font-semibold px-3 py-1 rounded-full bg-white border border-[#E2DCD2] text-[#083B40]">
+                ▶️ YouTube
+              </span>
+              <span className="text-xs font-semibold px-3 py-1 rounded-full bg-white border border-[#E2DCD2] text-[#083B40]">
+                👥 Facebook
+              </span>
             </div>
           </div>
 
@@ -53,7 +55,7 @@ export default function TestimonialsCarousel() {
               {/* Left Circular Arrow */}
               <button
                 onClick={handlePrev}
-                className="w-9 h-9 rounded-full bg-white shadow-sm border border-gray-100 flex items-center justify-center text-[#083B40] hover:bg-[#FAF8F3] transition-colors flex-shrink-0"
+                className="w-9 h-9 rounded-full bg-white shadow-sm border border-gray-100 flex items-center justify-center text-[#083B40] hover:bg-[#FAF8F3] transition-colors flex-shrink-0 cursor-pointer"
                 aria-label="Previous story"
               >
                 <ChevronLeft size={18} />
@@ -62,21 +64,26 @@ export default function TestimonialsCarousel() {
               {/* White Card */}
               <div className="w-full p-8 sm:p-10 rounded-2xl bg-white shadow-lg border border-gray-100/60 text-left space-y-4 min-h-[220px] flex flex-col justify-between">
                 <div className="space-y-3">
-                  <Quote size={28} className="text-[#083B40] transform -scale-x-100" />
+                  <div className="flex items-center justify-between">
+                    <Quote size={28} className="text-[#083B40] transform -scale-x-100" />
+                    <span className="text-[11px] font-semibold text-[#1B6B75] bg-[#EAF2F3] px-2.5 py-0.5 rounded-full">
+                      {current.source}
+                    </span>
+                  </div>
                   <p className="text-sm sm:text-base text-[#3A4C4E] font-normal leading-relaxed">
                     "{current.quote}"
                   </p>
                 </div>
 
-                <div className="text-xs font-semibold text-[#1B6B75] pt-2">
-                  — {current.author} <span className="font-normal text-gray-400">({current.location})</span>
+                <div className="text-xs font-semibold text-[#083B40] pt-2 border-t border-gray-50">
+                  — {current.author}
                 </div>
               </div>
 
               {/* Right Circular Arrow */}
               <button
                 onClick={handleNext}
-                className="w-9 h-9 rounded-full bg-white shadow-sm border border-gray-100 flex items-center justify-center text-[#083B40] hover:bg-[#FAF8F3] transition-colors flex-shrink-0"
+                className="w-9 h-9 rounded-full bg-white shadow-sm border border-gray-100 flex items-center justify-center text-[#083B40] hover:bg-[#FAF8F3] transition-colors flex-shrink-0 cursor-pointer"
                 aria-label="Next story"
               >
                 <ChevronRight size={18} />
@@ -90,7 +97,7 @@ export default function TestimonialsCarousel() {
                 <button
                   key={i}
                   onClick={() => setCurrentIndex(i)}
-                  className={`h-1.5 rounded-full transition-all ${
+                  className={`h-1.5 rounded-full transition-all cursor-pointer ${
                     currentIndex === i ? 'w-5 bg-[#083B40]' : 'w-1.5 bg-[#D2C8BA]'
                   }`}
                   aria-label={`Go to slide ${i + 1}`}
