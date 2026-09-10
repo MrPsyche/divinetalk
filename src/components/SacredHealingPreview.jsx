@@ -2,7 +2,7 @@ import React from 'react';
 import { Sparkles, Moon, Sun, ArrowRight } from 'lucide-react';
 import { SACRED_HEALING_SERVICES } from '../data/siteContent';
 
-export default function SacredHealingPreview({ onNavigateHealing }) {
+export default function SacredHealingPreview({ onOpenBooking }) {
   const iconMap = {
     'sacred-sleep': Moon,
     'trauma-cord-cutting': Sparkles,
@@ -12,12 +12,8 @@ export default function SacredHealingPreview({ onNavigateHealing }) {
   return (
     <section className="py-20 lg:py-28 bg-[#073E42] text-white relative overflow-hidden">
       
-      {/* Background Subtle Lotus Petal Watermark */}
-      <div className="absolute right-0 top-0 bottom-0 w-1/3 opacity-5 pointer-events-none flex items-center justify-center">
-        <svg viewBox="0 0 100 100" className="w-full h-full fill-white">
-          <circle cx="50" cy="50" r="40" />
-        </svg>
-      </div>
+      {/* Background Subtle Curved Arc / Circle Watermark on the Right */}
+      <div className="absolute right-[-100px] top-1/2 -translate-y-1/2 w-[550px] h-[550px] rounded-full border border-white/10 bg-white/[0.02] pointer-events-none hidden lg:block"></div>
 
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
@@ -39,7 +35,7 @@ export default function SacredHealingPreview({ onNavigateHealing }) {
 
             <div className="pt-2">
               <button
-                onClick={onNavigateHealing}
+                onClick={() => onOpenBooking({ serviceName: 'A Sacred Healing Session', practitioner: 'Karan Dogra' })}
                 className="btn-pill-gold"
               >
                 <span>Explore A Sacred Healing</span>
@@ -56,14 +52,14 @@ export default function SacredHealingPreview({ onNavigateHealing }) {
               return (
                 <div key={item.id} className="space-y-3 flex flex-col items-center sm:items-start">
                   <div className="text-[#C9A84E] pb-1">
-                    <Icon size={30} strokeWidth={1.5} />
+                    <Icon size={26} strokeWidth={1.75} />
                   </div>
 
                   <h3 className="text-base font-bold text-white">
                     {item.title}
                   </h3>
 
-                  <p className="text-xs sm:text-sm text-[#D0E4E6] font-normal leading-relaxed">
+                  <p className="text-xs text-[#D0E4E6] font-normal leading-relaxed">
                     {item.desc}
                   </p>
                 </div>

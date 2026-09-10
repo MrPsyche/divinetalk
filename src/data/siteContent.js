@@ -161,6 +161,33 @@ export const HOW_IT_WORKS_STEPS = [
   }
 ];
 
+export const SACRED_HEALING_SERVICES = [
+  {
+    id: "sacred-sleep",
+    title: "Sacred Sleep Healing",
+    tagline: "Restore Deep, Natural Rest & Subconscious Calm",
+    desc: "A highly specialized energy healing session targeting the root energetic causes of chronic insomnia, restless sleep, and nocturnal anxiety. Healer Karan Dogra works directly on the nervous system and subconscious mind to reset natural circadian rhythms and dissolve mental overactivity.",
+    forWhom: "Chronic insomnia, waking up drained, high nocturnal anxiety, and nervous system agitation.",
+    deepLinkKey: "SACRED_SLEEP"
+  },
+  {
+    id: "trauma-cord-cutting",
+    title: "Trauma Cord Cutting",
+    tagline: "Sever Draining Energetic Ties to the Past",
+    desc: "A profound energetic intervention designed to gently and safely sever unhealthy or draining etheric cords connected to past toxic relationships, painful events, places, or lingering emotional entanglements that silently deplete your vital life force.",
+    forWhom: "Individuals feeling drained by past partners, unresolved grief, toxic relationships, or lingering trauma.",
+    deepLinkKey: "TRAUMA_CORD_CUTTING"
+  },
+  {
+    id: "stress-release",
+    title: "Stress Release",
+    tagline: "Dissolve Chronic Burnout & Restore Core Balance",
+    desc: "An all-encompassing session where Healer Karan Dogra intuitively scans your subtle energy body to locate and release congested stress patterns. By addressing the energetic root of physical and mental fatigue, we provide immediate relief, lightness, and inner calm.",
+    forWhom: "Executive burnout, chronic mental overwhelm, somatic tension, and emotional fatigue.",
+    deepLinkKey: "STRESS_RELEASE"
+  }
+];
+
 export const FOUNDERS = [
   {
     name: "HimaniK Dograa",
