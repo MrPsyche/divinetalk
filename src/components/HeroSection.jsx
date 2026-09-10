@@ -24,7 +24,7 @@ export default function HeroSection({ onOpenBooking, onScrollToSection }) {
             {/* Main Headline */}
             <h1 className="text-4xl sm:text-5xl lg:text-[3.6rem] font-bold leading-[1.12] tracking-tight text-[#083B40]">
               Get Instant Clarity. <br />
-              <span className="text-[#083B40]">Overcome What’s Holding You Back.</span>
+              <span className="text-[#083B40]">Move Forward With Confidence.</span>
             </h1>
 
             {/* Supporting Description */}

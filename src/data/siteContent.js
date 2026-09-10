@@ -9,7 +9,7 @@ export const BRAND_ASSETS = {
   brandName: "Visions By Himani",
   brandAcronym: "VBH",
   previousName: "A Divine Talk",
-  tagline: "Get Instant Clarity. Overcome What’s Holding You Back.",
+  tagline: "Get Instant Clarity. Move Forward With Confidence.",
   logoUrl: "https://cdn.tealfeed.com/website-builder/1757690035628.png",
   himaniHero: himaniNewPhoto,
   himaniFounders: himaniNewPhoto,
@@ -25,7 +25,7 @@ export const SOCIAL_LINKS = {
 
 export const HERO_CONTENT = {
   eyebrow: "VISIONS BY HIMANI",
-  headline: "Get Instant Clarity.\nOvercome What’s Holding You Back.",
+  headline: "Get Instant Clarity.\nMove Forward With Confidence.",
   subheadline: "A private one-on-one visionary conversation for the questions that matter most — without the need for Your Name, Time of Birth, or Personal Details.",
   floatingBadge: {
     title: "NO NAME. NO DATE OF BIRTH. NO PERSONAL DETAILS.",
@@ -246,6 +246,10 @@ export const FAQS = [
   {
     question: "Do I need to prepare anything before my session?",
     answer: "No lengthy preparation is required. Come with the question, concern or situation you would like clarity around. You do not need to prepare a birth chart or detailed personal history."
+  },
+  {
+    question: "I'm Christian / Muslim / Hindu / Buddhist / from another faith. Is a Divine Talk for me?",
+    answer: "Yes. A Divine Talk is not dependent on a particular religion or belief system. You are welcome exactly as you are. The conversation is focused on your question and the clarity and guidance you seek, while respecting your personal beliefs and free will."
   },
   {
     question: "What types of questions can I ask Himani?",
