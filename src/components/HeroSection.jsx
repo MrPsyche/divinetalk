@@ -93,12 +93,12 @@ export default function HeroSection({ onOpenBooking, onScrollToSection }) {
 
           </div>
 
-          {/* Right Column: New Portrait of Himani with Golden Reassurance Card (5 cols) */}
+          {/* Right Column: Portrait of Himani with Borderless Golden Card (White Font) */}
           <div className="lg:col-span-5 relative flex justify-center lg:justify-end">
             <div className="relative w-full max-w-md">
               
               {/* Natural Image Container with New Photo */}
-              <div className="relative rounded-3xl overflow-hidden shadow-2xl bg-white aspect-[4/5] border border-[#E9D9B2]/60">
+              <div className="relative rounded-3xl overflow-hidden shadow-2xl bg-white aspect-[4/5]">
                 <img
                   src={BRAND_ASSETS.himaniHero}
                   alt="HimaniK Dograa — Lead Visionary"
@@ -106,19 +106,19 @@ export default function HeroSection({ onOpenBooking, onScrollToSection }) {
                 />
               </div>
 
-              {/* Floating Golden Reassurance Card on Bottom-Left */}
-              <div className="absolute -bottom-6 -left-6 sm:-left-8 bg-gradient-to-br from-[#D4AF37] via-[#C9A84E] to-[#B88E28] p-5 sm:p-6 rounded-2xl shadow-2xl text-left text-[#083B40] max-w-[290px] sm:max-w-xs border border-[#F3E5C2]">
+              {/* Floating Golden Reassurance Card: NO BORDER, WHITE FONT */}
+              <div className="absolute -bottom-6 -left-6 sm:-left-8 bg-gradient-to-br from-[#D4AF37] via-[#C9A84E] to-[#B88E28] p-5 sm:p-6 rounded-2xl shadow-2xl text-left text-white max-w-[290px] sm:max-w-xs border-0">
                 <div className="flex items-start gap-3">
-                  <div className="p-2 rounded-xl bg-white/20 text-[#083B40] backdrop-blur-xs flex-shrink-0 shadow-xs">
+                  <div className="p-2 rounded-xl bg-white/20 text-white backdrop-blur-xs flex-shrink-0 shadow-xs">
                     <Shield size={20} strokeWidth={2.5} />
                   </div>
                   <div className="space-y-1">
-                    <h4 className="text-xs font-extrabold text-[#083B40] tracking-wide uppercase leading-snug">
+                    <h4 className="text-xs font-bold text-white tracking-wide uppercase leading-snug">
                       NO NAME.<br />
                       NO DATE OF BIRTH.<br />
                       NO PERSONAL DETAILS.
                     </h4>
-                    <p className="text-[11px] text-[#083B40]/90 font-medium leading-relaxed pt-1">
+                    <p className="text-[11px] text-white/95 font-medium leading-relaxed pt-1">
                       Just you, your concern, and a conversation that brings clarity.
                     </p>
                   </div>
