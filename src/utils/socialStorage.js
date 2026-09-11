@@ -3,7 +3,7 @@
  * Stores and manages real Instagram Reels and YouTube video embeds
  */
 
-const SOCIAL_STORAGE_KEY = 'vbh_social_feeds_v3';
+const SOCIAL_STORAGE_KEY = 'vbh_social_feeds_v4';
 
 export const DEFAULT_SOCIAL_FEEDS = {
   instagram: {
@@ -13,27 +13,30 @@ export const DEFAULT_SOCIAL_FEEDS = {
     reels: [
       {
         id: 'reel-1',
-        title: 'Visionary Insights & Spiritual Guidance with Himani',
+        title: 'Every Journey towards Clarity begins with a Single Decision',
         category: 'Visionary Insights',
         reelUrl: 'https://www.instagram.com/reel/DXzim8QysNp/',
         reelId: 'DXzim8QysNp',
-        excerpt: 'Watch Himani discuss intuitive perception, spiritual clarity, and navigating life situations.'
+        videoSrc: '/videos/reels/reel1.mp4',
+        excerpt: 'Client reflection on how taking a single intuitive consultation transformed their life direction.'
       },
       {
         id: 'reel-2',
-        title: 'Overcoming Life Crossroads & Finding Inner Peace',
-        category: 'Life Guidance',
+        title: 'Why Every Business Owner Needs a 30-Minute 6th Sense Consultation',
+        category: 'Business & Career',
         reelUrl: 'https://www.instagram.com/reel/DbI_UHBSGj1/',
         reelId: 'DbI_UHBSGj1',
-        excerpt: 'Understanding the underlying energetic factors that influence relationship and career choices.'
+        videoSrc: '/videos/reels/reel2.mp4',
+        excerpt: 'Rakesh Ji shares why visionary intuition cuts through corporate impasses and executive decision fatigue.'
       },
       {
         id: 'reel-3',
-        title: '6th Sense Siddhi & Consultation Clarity',
-        category: 'Spiritual Perspective',
+        title: 'When the Guidance is Real — Dil Maange More',
+        category: 'Client Trust',
         reelUrl: 'https://www.instagram.com/reel/DXMqSqSCGkI/',
         reelId: 'DXMqSqSCGkI',
-        excerpt: 'How intuitive perception pinpoints the exact situation without personal or astrological details.'
+        videoSrc: '/videos/reels/reel3.mp4',
+        excerpt: 'Repeat client reviews and real-life experiences with Himani’s 6th sense visionary perception.'
       }
     ]
   },

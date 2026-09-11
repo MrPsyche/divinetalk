@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { 
   Play, ExternalLink, Sparkles, Heart, MessageCircle, 
-  Plus, Trash2, CheckCircle2, Film, Video, Share2
+  Plus, Trash2, CheckCircle2, Film, Video, Share2, X, Maximize2, Volume2
 } from 'lucide-react';
 import { SOCIAL_LINKS } from '../data/siteContent';
 import { 
@@ -24,11 +24,21 @@ export default function SocialFeedSection() {
   const [activePlatform, setActivePlatform] = useState('instagram'); // 'instagram' | 'youtube' | 'facebook'
   const [socialData, setSocialData] = useState(getSocialFeeds());
   const [selectedYtVideo, setSelectedYtVideo] = useState(null);
+  const [activeModalVideo, setActiveModalVideo] = useState(null); // { type: 'video' | 'youtube', src, title, link, category, excerpt }
 
   useEffect(() => {
     const handleUpdate = () => setSocialData(getSocialFeeds());
     window.addEventListener('vbh_social_updated', handleUpdate);
     return () => window.removeEventListener('vbh_social_updated', handleUpdate);
+  }, []);
+
+  // Handle ESC key to close modal
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') setActiveModalVideo(null);
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
   return (
@@ -127,55 +137,54 @@ export default function SocialFeedSection() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {socialData.instagram.reels.map((reel, index) => {
                 const igId = reel.reelId || extractInstagramId(reel.reelUrl);
+                const videoFile = reel.videoSrc || `/videos/reels/reel${index + 1}.mp4`;
 
                 return (
                   <div 
                     key={reel.id || index}
                     className="bg-white p-5 rounded-3xl border border-[#EFEBE3] shadow-xs flex flex-col justify-between space-y-4 hover:shadow-md transition-shadow"
                   >
-                    {/* Embedded Reel Frame or Reel Card Visual */}
-                    {igId ? (
-                      <div className="w-full rounded-2xl overflow-hidden border border-[#EFEBE3] bg-white shadow-2xs">
-                        <iframe
-                          src={`https://www.instagram.com/reel/${igId}/embed/`}
-                          className="w-full h-[480px] sm:h-[500px] border-0"
-                          title={reel.title}
-                          allowTransparency="true"
-                          allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
-                          scrolling="no"
-                          frameBorder="0"
-                        />
-                      </div>
-                    ) : (
-                      <div className="w-full aspect-[9/10] rounded-2xl bg-gradient-to-b from-[#083B40] to-[#0A2628] p-6 text-white flex flex-col justify-between relative overflow-hidden group">
-                        <div className="absolute inset-0 opacity-20 bg-[radial-gradient(#C9A84E_1px,transparent_1px)] [background-size:16px_16px]" />
-                        
-                        <div className="relative z-10 flex items-center justify-between">
-                          <span className="text-[10px] font-bold tracking-widest uppercase bg-[#C9A84E]/20 text-[#E0C068] px-2.5 py-1 rounded-full border border-[#C9A84E]/30">
-                            {reel.category || 'Reel Reflection'}
-                          </span>
-                          <InstagramIcon className="w-5 h-5 text-pink-400" />
-                        </div>
-
-                        <div className="relative z-10 my-auto text-center space-y-3">
-                          <div className="w-14 h-14 mx-auto rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-[#C9A84E] group-hover:scale-110 transition-transform">
-                            <Play size={22} className="fill-[#C9A84E] ml-1" />
-                          </div>
-                          <p className="text-xs font-medium text-neutral-200 line-clamp-3">
-                            "{reel.title}"
-                          </p>
-                        </div>
-
-                        <div className="relative z-10 text-center">
-                          <span className="text-[11px] text-[#C9A84E] font-medium tracking-wide">
-                            Tap to Watch on @adivinetalk
-                          </span>
+                    {/* HTML5 Video Player with controls and sound */}
+                    <div className="relative w-full rounded-2xl overflow-hidden bg-neutral-900 border border-[#EFEBE3] shadow-inner aspect-[9/14] group flex items-center justify-center">
+                      <video
+                        src={videoFile}
+                        controls
+                        playsInline
+                        preload="metadata"
+                        className="w-full h-full object-cover"
+                        title={reel.title}
+                      />
+                      
+                      {/* Top Overlay Badge */}
+                      <div className="absolute top-3 left-3 right-3 flex items-center justify-between pointer-events-none z-10">
+                        <span className="text-[10px] font-bold tracking-widest uppercase bg-black/60 backdrop-blur-md text-[#E0C068] px-2.5 py-1 rounded-full border border-white/20">
+                          {reel.category || 'Reel Reflection'}
+                        </span>
+                        <div className="w-7 h-7 rounded-full bg-black/60 backdrop-blur-md flex items-center justify-center text-pink-400 border border-white/20">
+                          <InstagramIcon className="w-4 h-4" />
                         </div>
                       </div>
-                    )}
 
-                    {/* Card Content & Action */}
-                    <div className="space-y-2.5">
+                      {/* Expand / Popup Button */}
+                      <button
+                        type="button"
+                        onClick={() => setActiveModalVideo({
+                          type: 'video',
+                          src: videoFile,
+                          title: reel.title,
+                          category: reel.category,
+                          link: reel.reelUrl || (igId ? `https://www.instagram.com/reel/${igId}/` : SOCIAL_LINKS.instagram),
+                          excerpt: reel.excerpt
+                        })}
+                        className="absolute bottom-14 right-3 p-2 rounded-full bg-black/60 hover:bg-[#083B40] text-white backdrop-blur-md border border-white/20 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer z-10"
+                        title="Open Video in Popup Modal"
+                      >
+                        <Maximize2 size={14} />
+                      </button>
+                    </div>
+
+                    {/* Card Content */}
+                    <div className="space-y-2 text-left">
                       <div className="flex items-center justify-between text-xs">
                         <span className="font-bold text-[#B88E28]">{reel.category}</span>
                         <a 
@@ -188,7 +197,7 @@ export default function SocialFeedSection() {
                           <ExternalLink size={11} />
                         </a>
                       </div>
-                      <h4 className="text-sm font-bold text-[#083B40] line-clamp-2">
+                      <h4 className="text-sm font-bold text-[#083B40] line-clamp-2 leading-snug">
                         {reel.title}
                       </h4>
                       <p className="text-xs text-[#506062] leading-relaxed line-clamp-2">
@@ -196,8 +205,9 @@ export default function SocialFeedSection() {
                       </p>
                     </div>
 
+                    {/* Action Link to Main Instagram Page */}
                     <a
-                      href={reel.reelUrl || `https://www.instagram.com/reel/${igId}/`}
+                      href={reel.reelUrl || (igId ? `https://www.instagram.com/reel/${igId}/` : SOCIAL_LINKS.instagram)}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="btn-pill-outline w-full text-center text-xs py-2.5 cursor-pointer flex items-center justify-center gap-1.5 hover:bg-[#083B40] hover:text-white transition-colors"
@@ -275,12 +285,12 @@ export default function SocialFeedSection() {
                   }
 
                   return (
-                    <div className="aspect-video w-full rounded-2xl bg-gradient-to-br from-[#083B40] via-[#0D4D54] to-[#052629] p-8 text-white flex flex-col justify-between relative overflow-hidden">
+                    <div className="aspect-video w-full rounded-2xl bg-gradient-to-br from-[#083B40] via-[#0D4D54] to-[#052629] p-8 text-white flex flex-col justify-between relative overflow-hidden shadow-md">
                       <div className="space-y-2">
                         <span className="text-[11px] font-bold text-[#C9A84E] uppercase tracking-widest">
-                          A Divine Talk • YouTube Hub
+                          A Divine Talk • Video Hub
                         </span>
-                        <h4 className="text-lg sm:text-xl font-bold">
+                        <h4 className="text-lg sm:text-xl font-bold leading-snug">
                           {currentVideo?.title || "Visionary Discourses & Consultations with HimaniK Dograa"}
                         </h4>
                         <p className="text-xs sm:text-sm text-neutral-300">
@@ -288,15 +298,31 @@ export default function SocialFeedSection() {
                         </p>
                       </div>
 
-                      <div className="flex items-center gap-3 pt-4">
+                      <div className="flex flex-wrap items-center gap-3 pt-4">
+                        <button
+                          type="button"
+                          onClick={() => setActiveModalVideo({
+                            type: 'video',
+                            src: '/videos/reels/reel1.mp4',
+                            title: currentVideo?.title || 'Understanding 6th Sense Consultations',
+                            category: 'Spiritual Perspective',
+                            link: SOCIAL_LINKS.youtube,
+                            excerpt: currentVideo?.description || 'Watch the consultation discussion with Himani.'
+                          })}
+                          className="btn-pill-teal text-xs py-2.5 px-5 cursor-pointer flex items-center gap-2 bg-[#C9A84E] text-[#083B40] font-bold hover:bg-[#b59540]"
+                        >
+                          <Play size={14} className="fill-[#083B40]" />
+                          <span>Play Video with Sound</span>
+                        </button>
+
                         <a
                           href={currentVideo?.videoUrl || SOCIAL_LINKS.youtube}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="btn-pill-teal text-xs py-2.5 px-5 cursor-pointer flex items-center gap-2 bg-[#C9A84E] text-[#083B40] font-bold hover:bg-[#b59540]"
+                          className="btn-pill-outline text-xs py-2.5 px-4 cursor-pointer flex items-center gap-1.5 text-white border-white/30 hover:bg-white/10"
                         >
-                          <Play size={14} className="fill-[#083B40]" />
-                          <span>Watch on YouTube Channel</span>
+                          <span>Open on YouTube</span>
+                          <ExternalLink size={12} />
                         </a>
                       </div>
                     </div>
@@ -326,8 +352,18 @@ export default function SocialFeedSection() {
                 {socialData.youtube.videos.map((vid, idx) => (
                   <div 
                     key={vid.id || idx}
-                    onClick={() => setSelectedYtVideo(vid)}
-                    className={`p-4 rounded-2xl border transition-all cursor-pointer text-left ${
+                    onClick={() => {
+                      setSelectedYtVideo(vid);
+                      setActiveModalVideo({
+                        type: 'video',
+                        src: `/videos/reels/reel${(idx % 3) + 1}.mp4`,
+                        title: vid.title,
+                        category: vid.category || 'Topic',
+                        link: vid.videoUrl || SOCIAL_LINKS.youtube,
+                        excerpt: vid.description
+                      });
+                    }}
+                    className={`p-4 rounded-2xl border transition-all cursor-pointer text-left group ${
                       (selectedYtVideo?.id === vid.id || (!selectedYtVideo && idx === 0))
                         ? 'bg-white border-[#1B6B75] shadow-md ring-1 ring-[#1B6B75]/20'
                         : 'bg-white/80 border-[#EFEBE3] hover:bg-white hover:border-[#CBD5E1]'
@@ -337,7 +373,9 @@ export default function SocialFeedSection() {
                       <span className="text-[10px] font-bold text-[#B88E28] uppercase tracking-wider">
                         {vid.category || 'Topic'}
                       </span>
-                      <Play size={12} className="text-[#1B6B75] fill-[#1B6B75] mt-0.5" />
+                      <div className="w-6 h-6 rounded-full bg-[#1B6B75]/10 flex items-center justify-center text-[#1B6B75] group-hover:scale-110 transition-transform">
+                        <Play size={11} className="fill-[#1B6B75] ml-0.5" />
+                      </div>
                     </div>
                     <h5 className="text-xs sm:text-sm font-bold text-[#083B40] mb-1">
                       {vid.title}
@@ -455,6 +493,65 @@ export default function SocialFeedSection() {
         )}
 
       </div>
+
+      {/* ========================================================= */}
+      {/* UNIVERSAL VIDEO POPUP MODAL */}
+      {/* ========================================================= */}
+      {activeModalVideo && (
+        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 sm:p-6 animate-fadeIn">
+          <div className="relative bg-[#083B40] text-white w-full max-w-2xl rounded-3xl overflow-hidden shadow-2xl border border-white/10 flex flex-col">
+            
+            {/* Modal Header */}
+            <div className="p-4 sm:p-5 flex items-center justify-between border-b border-white/10">
+              <div className="flex items-center gap-2">
+                <span className="text-[10px] font-bold tracking-widest uppercase bg-[#C9A84E] text-[#083B40] px-2.5 py-0.5 rounded-full">
+                  {activeModalVideo.category || 'Video'}
+                </span>
+                <h3 className="text-sm sm:text-base font-bold text-white line-clamp-1">
+                  {activeModalVideo.title}
+                </h3>
+              </div>
+              <button
+                onClick={() => setActiveModalVideo(null)}
+                className="p-1.5 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors cursor-pointer"
+                title="Close Video"
+              >
+                <X size={18} />
+              </button>
+            </div>
+
+            {/* Video Player */}
+            <div className="relative w-full bg-black aspect-video flex items-center justify-center overflow-hidden">
+              <video
+                src={activeModalVideo.src}
+                controls
+                autoPlay
+                playsInline
+                className="w-full h-full object-contain"
+              />
+            </div>
+
+            {/* Modal Footer & Redirect Action */}
+            <div className="p-4 sm:p-5 bg-[#052629] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+              <p className="text-xs text-neutral-300 line-clamp-2 max-w-md text-left">
+                {activeModalVideo.excerpt || 'Watch full discussion and connect with Himani on our official social channels.'}
+              </p>
+
+              <a
+                href={activeModalVideo.link || SOCIAL_LINKS.instagram}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-pill-teal text-xs py-2 px-5 cursor-pointer flex items-center gap-2 bg-[#C9A84E] text-[#083B40] font-bold hover:bg-[#b59540] flex-shrink-0"
+              >
+                <span>Open in Official App</span>
+                <ExternalLink size={13} />
+              </a>
+            </div>
+
+          </div>
+        </div>
+      )}
+
     </section>
   );
 }
