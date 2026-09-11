@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { 
   Play, ExternalLink, Sparkles, Heart, MessageCircle, 
-  Plus, Trash2, CheckCircle2, Film, Video, Share2, X, Maximize2, Volume2
+  Plus, Trash2, CheckCircle2, Film, Video, Share2, X, Maximize2, Volume2,
+  Quote, ChevronLeft, ChevronRight, MessageSquare
 } from 'lucide-react';
-import { SOCIAL_LINKS } from '../data/siteContent';
+import { SOCIAL_LINKS, TESTIMONIALS } from '../data/siteContent';
 import { 
   getSocialFeeds, extractInstagramId, extractYouTubeId 
 } from '../utils/socialStorage';
@@ -21,10 +22,21 @@ const FacebookIcon = ({ className = "w-4 h-4" }) => (
 );
 
 export default function SocialFeedSection() {
-  const [activePlatform, setActivePlatform] = useState('instagram'); // 'instagram' | 'youtube' | 'facebook'
+  const [activePlatform, setActivePlatform] = useState('instagram'); // 'instagram' | 'youtube' | 'facebook' | 'testimonials'
   const [socialData, setSocialData] = useState(getSocialFeeds());
   const [selectedYtVideo, setSelectedYtVideo] = useState(null);
   const [activeModalVideo, setActiveModalVideo] = useState(null); // { type: 'video' | 'youtube', src, title, link, category, excerpt }
+  const [testimonialIndex, setTestimonialIndex] = useState(0);
+
+  const currentTestimonial = TESTIMONIALS[testimonialIndex];
+
+  const handlePrevTestimonial = () => {
+    setTestimonialIndex((prev) => (prev === 0 ? TESTIMONIALS.length - 1 : prev - 1));
+  };
+
+  const handleNextTestimonial = () => {
+    setTestimonialIndex((prev) => (prev === TESTIMONIALS.length - 1 ? 0 : prev + 1));
+  };
 
   useEffect(() => {
     const handleUpdate = () => setSocialData(getSocialFeeds());
@@ -42,26 +54,26 @@ export default function SocialFeedSection() {
   }, []);
 
   return (
-    <section className="py-20 lg:py-28 bg-[#FAF8F3] text-[#2D3E40] border-y border-[#EFEBE3] relative">
+    <section id="testimonials" className="py-20 lg:py-28 bg-[#FAF8F3] text-[#2D3E40] border-y border-[#EFEBE3] relative">
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 text-center">
         
-        {/* Section Header */}
+        {/* Unified Section Header */}
         <div className="space-y-3 max-w-3xl mx-auto mb-10">
           <div className="flex items-center justify-center gap-2 text-[#1B6B75]">
             <Sparkles size={16} />
             <span className="text-xs uppercase tracking-[0.2em] font-semibold">
-              Live Channels & Video Reflections
+              Live Channels & Real Client Stories
             </span>
           </div>
           <h2 className="text-3xl sm:text-4xl font-bold text-[#083B40]">
-            Our Official Social Stream
+            Our Official Social Stream & Client Reflections
           </h2>
           <p className="text-sm sm:text-base text-[#506062] font-normal leading-relaxed">
-            Watch recent video reflections, client insights, and discourses from our official Instagram, YouTube, and Facebook channels.
+            Watch recent video reflections from our official Instagram, YouTube, and Facebook channels, and explore verified client experiences.
           </p>
         </div>
 
-        {/* Platform Selector Tabs */}
+        {/* Platform & Category Selector Tabs */}
         <div className="flex flex-wrap items-center justify-center gap-3 mb-12">
           {/* Instagram Button */}
           <button
@@ -73,7 +85,7 @@ export default function SocialFeedSection() {
             }`}
           >
             <InstagramIcon className={activePlatform === 'instagram' ? 'w-4 h-4 text-[#C9A84E]' : 'w-4 h-4 text-pink-600'} />
-            <span>Instagram Feed (@adivinetalk)</span>
+            <span>Instagram Reels (@adivinetalk)</span>
           </button>
 
           {/* YouTube Button */}
@@ -102,6 +114,19 @@ export default function SocialFeedSection() {
           >
             <FacebookIcon className={activePlatform === 'facebook' ? 'w-4 h-4 text-[#C9A84E]' : 'w-4 h-4 text-blue-600'} />
             <span>Facebook Page (@ADivineTalk)</span>
+          </button>
+
+          {/* Written Reviews Button */}
+          <button
+            onClick={() => setActivePlatform('testimonials')}
+            className={`px-5 py-2.5 rounded-full text-xs sm:text-sm font-semibold transition-all cursor-pointer flex items-center gap-2 ${
+              activePlatform === 'testimonials'
+                ? 'bg-[#083B40] text-white shadow-md'
+                : 'bg-white text-[#506062] border border-[#E2DCD2] hover:border-[#083B40]'
+            }`}
+          >
+            <MessageSquare className={activePlatform === 'testimonials' ? 'w-4 h-4 text-[#C9A84E]' : 'w-4 h-4 text-[#1B6B75]'} />
+            <span>Client Reviews & Stories</span>
           </button>
         </div>
 
@@ -491,6 +516,78 @@ export default function SocialFeedSection() {
             </div>
           </div>
         )}
+
+        {/* 4. WRITTEN CLIENT TESTIMONIALS TAB */}
+        {activePlatform === 'testimonials' && (
+          <div className="space-y-8 text-left">
+            <div className="bg-white p-8 sm:p-12 rounded-3xl border border-[#EFEBE3] shadow-md max-w-4xl mx-auto text-left relative">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-6 border-b border-gray-100">
+                <div className="flex items-center gap-3">
+                  <div className="p-2.5 rounded-2xl bg-[#FAF0D7] text-[#B88E28]">
+                    <Quote size={24} className="transform -scale-x-100" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-bold text-[#083B40]">Verified Consultation Reflection</h3>
+                    <span className="text-xs text-[#7A8B8D]">Real experience from our community</span>
+                  </div>
+                </div>
+
+                <span className="text-xs font-semibold text-[#1B6B75] bg-[#EAF2F3] px-3 py-1 rounded-full">
+                  {currentTestimonial.source}
+                </span>
+              </div>
+
+              <blockquote className="text-base sm:text-lg text-[#3A4C4E] font-normal leading-relaxed py-6">
+                "{currentTestimonial.quote}"
+              </blockquote>
+
+              <div className="pt-4 border-t border-gray-100 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                <div className="text-xs font-bold text-[#083B40]">
+                  — {currentTestimonial.author}
+                </div>
+
+                {/* Navigation Arrows */}
+                <div className="flex items-center gap-2">
+                  <span className="text-xs text-[#7A8B8D] mr-2">
+                    {testimonialIndex + 1} of {TESTIMONIALS.length}
+                  </span>
+                  <button
+                    onClick={handlePrevTestimonial}
+                    className="w-8 h-8 rounded-full bg-[#F9F7F1] border border-[#E2DCD2] flex items-center justify-center text-[#083B40] hover:bg-[#FAF0D7] transition-colors cursor-pointer"
+                    aria-label="Previous testimonial"
+                  >
+                    <ChevronLeft size={16} />
+                  </button>
+                  <button
+                    onClick={handleNextTestimonial}
+                    className="w-8 h-8 rounded-full bg-[#F9F7F1] border border-[#E2DCD2] flex items-center justify-center text-[#083B40] hover:bg-[#FAF0D7] transition-colors cursor-pointer"
+                    aria-label="Next testimonial"
+                  >
+                    <ChevronRight size={16} />
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Social Channel Links Bar */}
+        <div className="mt-14 pt-8 border-t border-[#E2DCD2] flex flex-wrap items-center justify-center gap-6 text-xs text-[#506062]">
+          <span>Follow our official channels for more video stories:</span>
+          <div className="flex items-center gap-4 text-xs font-bold text-[#083B40]">
+            <a href={SOCIAL_LINKS.instagram} target="_blank" rel="noopener noreferrer" className="hover:text-[#1B6B75] flex items-center gap-1">
+              <span>📸 Instagram (@adivinetalk)</span>
+            </a>
+            <span>•</span>
+            <a href={SOCIAL_LINKS.youtube} target="_blank" rel="noopener noreferrer" className="hover:text-[#1B6B75] flex items-center gap-1">
+              <span>▶️ YouTube (@ADivineTalk)</span>
+            </a>
+            <span>•</span>
+            <a href={SOCIAL_LINKS.facebook} target="_blank" rel="noopener noreferrer" className="hover:text-[#1B6B75] flex items-center gap-1">
+              <span>👥 Facebook (@ADivineTalk)</span>
+            </a>
+          </div>
+        </div>
 
       </div>
 
