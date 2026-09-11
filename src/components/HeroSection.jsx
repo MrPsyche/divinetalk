@@ -94,7 +94,7 @@ export default function HeroSection({ onOpenBooking, onScrollToSection }) {
           </div>
 
           {/* Right Column: Portrait of Himani with Borderless Golden Card (White Font) */}
-          <div className="lg:col-span-5 relative flex justify-center lg:justify-end mt-4 lg:mt-0">
+          <div className="lg:col-span-5 relative flex justify-center lg:justify-end mt-6 lg:mt-0 pb-6 sm:pb-0">
             <div className="relative w-full max-w-[320px] sm:max-w-md mx-auto lg:mr-0">
               
               {/* Natural Image Container with New Photo */}
@@ -106,8 +106,8 @@ export default function HeroSection({ onOpenBooking, onScrollToSection }) {
                 />
               </div>
 
-              {/* Floating Golden Reassurance Card: NO BORDER, WHITE FONT, CENTERED ON MOBILE */}
-              <div className="absolute -bottom-6 left-3 right-3 sm:left-auto sm:right-auto sm:-left-8 sm:-bottom-6 bg-gradient-to-br from-[#D4AF37] via-[#C9A84E] to-[#B88E28] p-4 sm:p-6 rounded-2xl shadow-2xl text-left text-white max-w-none sm:max-w-xs border-0">
+              {/* Floating Golden Reassurance Card: Centered on mobile, offset on desktop */}
+              <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 sm:translate-x-0 sm:left-[-1.5rem] lg:left-[-2rem] w-[92%] sm:w-[300px] bg-gradient-to-br from-[#D4AF37] via-[#C9A84E] to-[#B88E28] p-4 sm:p-5 rounded-2xl shadow-2xl text-left text-white border-0 z-10">
                 <div className="flex items-start gap-3">
                   <div className="p-2 rounded-xl bg-white/20 text-white backdrop-blur-xs flex-shrink-0 shadow-xs">
                     <Shield size={20} strokeWidth={2.5} />
