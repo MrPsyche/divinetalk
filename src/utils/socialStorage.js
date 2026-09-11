@@ -1,9 +1,9 @@
-﻿/**
+/**
  * Social Feeds & Video Storage Manager
  * Stores and manages real Instagram Reels and YouTube video embeds
  */
 
-const SOCIAL_STORAGE_KEY = 'vbh_social_feeds_v2';
+const SOCIAL_STORAGE_KEY = 'vbh_social_feeds_v3';
 
 export const DEFAULT_SOCIAL_FEEDS = {
   instagram: {
@@ -13,27 +13,27 @@ export const DEFAULT_SOCIAL_FEEDS = {
     reels: [
       {
         id: 'reel-1',
-        title: 'How Intuitive Siddhi Perception Works Without Personal Details',
+        title: 'Visionary Insights & Spiritual Guidance with Himani',
         category: 'Visionary Insights',
-        reelUrl: 'https://www.instagram.com/adivinetalk/',
-        reelId: '',
-        excerpt: 'Watch Himani discuss how root energetic frequencies reveal the core truth of your situation.'
+        reelUrl: 'https://www.instagram.com/reel/DXzim8QysNp/',
+        reelId: 'DXzim8QysNp',
+        excerpt: 'Watch Himani discuss intuitive perception, spiritual clarity, and navigating life situations.'
       },
       {
         id: 'reel-2',
-        title: 'Relationship Crossroads & Breaking Repetitive Emotional Cycles',
-        category: 'Relationships',
-        reelUrl: 'https://www.instagram.com/adivinetalk/',
-        reelId: '',
-        excerpt: 'Understanding the unspoken emotional dynamics that cause marital distance.'
+        title: 'Overcoming Life Crossroads & Finding Inner Peace',
+        category: 'Life Guidance',
+        reelUrl: 'https://www.instagram.com/reel/DbI_UHBSGj1/',
+        reelId: 'DbI_UHBSGj1',
+        excerpt: 'Understanding the underlying energetic factors that influence relationship and career choices.'
       },
       {
         id: 'reel-3',
-        title: 'Career Plateau vs Realignment — Finding Your Unblocked Path',
-        category: 'Career & Purpose',
-        reelUrl: 'https://www.instagram.com/adivinetalk/',
-        reelId: '',
-        excerpt: 'Why hard work alone hits a ceiling and how to unlock the energetic momentum.'
+        title: '6th Sense Siddhi & Consultation Clarity',
+        category: 'Spiritual Perspective',
+        reelUrl: 'https://www.instagram.com/reel/DXMqSqSCGkI/',
+        reelId: 'DXMqSqSCGkI',
+        excerpt: 'How intuitive perception pinpoints the exact situation without personal or astrological details.'
       }
     ]
   },

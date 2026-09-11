@@ -135,14 +135,15 @@ export default function SocialFeedSection() {
                   >
                     {/* Embedded Reel Frame or Reel Card Visual */}
                     {igId ? (
-                      <div className="w-full rounded-2xl overflow-hidden border border-[#EFEBE3] bg-neutral-900 aspect-[9/14] flex items-center justify-center">
+                      <div className="w-full rounded-2xl overflow-hidden border border-[#EFEBE3] bg-white shadow-2xs">
                         <iframe
-                          src={`https://www.instagram.com/reel/${igId}/embed/captioned/`}
-                          className="w-full h-full border-0"
+                          src={`https://www.instagram.com/reel/${igId}/embed/`}
+                          className="w-full h-[480px] sm:h-[500px] border-0"
                           title={reel.title}
                           allowTransparency="true"
-                          allow="encrypted-media"
+                          allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
                           scrolling="no"
+                          frameBorder="0"
                         />
                       </div>
                     ) : (
@@ -177,7 +178,15 @@ export default function SocialFeedSection() {
                     <div className="space-y-2.5">
                       <div className="flex items-center justify-between text-xs">
                         <span className="font-bold text-[#B88E28]">{reel.category}</span>
-                        <span className="text-[#9BAAA9]">@adivinetalk</span>
+                        <a 
+                          href={SOCIAL_LINKS.instagram}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-[#1B6B75] font-semibold hover:underline flex items-center gap-1"
+                        >
+                          <span>@adivinetalk</span>
+                          <ExternalLink size={11} />
+                        </a>
                       </div>
                       <h4 className="text-sm font-bold text-[#083B40] line-clamp-2">
                         {reel.title}
@@ -188,13 +197,13 @@ export default function SocialFeedSection() {
                     </div>
 
                     <a
-                      href={reel.reelUrl || SOCIAL_LINKS.instagram}
+                      href={reel.reelUrl || `https://www.instagram.com/reel/${igId}/`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="btn-pill-outline w-full text-center text-xs py-2.5 cursor-pointer flex items-center justify-center gap-1.5"
+                      className="btn-pill-outline w-full text-center text-xs py-2.5 cursor-pointer flex items-center justify-center gap-1.5 hover:bg-[#083B40] hover:text-white transition-colors"
                     >
-                      <Play size={13} className="fill-[#083B40]" />
-                      <span>Watch on Instagram</span>
+                      <Play size={13} className="fill-current" />
+                      <span>Watch Reel on Instagram (@adivinetalk)</span>
                     </a>
                   </div>
                 );
