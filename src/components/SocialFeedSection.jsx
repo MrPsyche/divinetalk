@@ -1,20 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
-  Play, ExternalLink, Video, Sparkles, CheckCircle2, 
-  Heart, MessageCircle, Share2 
+  Play, ExternalLink, Sparkles, Heart, MessageCircle, 
+  Plus, Trash2, CheckCircle2, Film, Video, Share2
 } from 'lucide-react';
 import { SOCIAL_LINKS } from '../data/siteContent';
+import { 
+  getSocialFeeds, extractInstagramId, extractYouTubeId 
+} from '../utils/socialStorage';
 
-// Custom Brand SVGs
 const InstagramIcon = ({ className = "w-4 h-4" }) => (
   <svg className={className} fill="currentColor" viewBox="0 0 24 24">
     <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
-  </svg>
-);
-
-const YoutubeIcon = ({ className = "w-4 h-4" }) => (
-  <svg className={className} fill="currentColor" viewBox="0 0 24 24">
-    <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
   </svg>
 );
 
@@ -24,85 +20,16 @@ const FacebookIcon = ({ className = "w-4 h-4" }) => (
   </svg>
 );
 
-export const REELS_FEED_DATA = [
-  {
-    id: "reel-1",
-    title: "How to know if a career roadblock is an energetic misalignment or timing",
-    views: "18.4K",
-    likes: "1.2K",
-    comments: "84",
-    thumbnail: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=800&q=80",
-    url: "https://www.instagram.com/adivinetalk/",
-    tag: "Career Insight"
-  },
-  {
-    id: "reel-2",
-    title: "Why Himani requires zero birth details for an accurate visionary reading",
-    views: "24.6K",
-    likes: "2.1K",
-    comments: "142",
-    thumbnail: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=800&q=80",
-    url: "https://www.instagram.com/adivinetalk/",
-    tag: "Pure Intuition"
-  },
-  {
-    id: "reel-3",
-    title: "Resolving repetitive relationship arguments from the root cause",
-    views: "31.2K",
-    likes: "2.8K",
-    comments: "210",
-    thumbnail: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=800&q=80",
-    url: "https://www.instagram.com/adivinetalk/",
-    tag: "Relationship Clarity"
-  },
-  {
-    id: "reel-4",
-    title: "Making major life decisions with peace instead of fear",
-    views: "15.8K",
-    likes: "1.5K",
-    comments: "96",
-    thumbnail: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=800&q=80",
-    url: "https://www.instagram.com/adivinetalk/",
-    tag: "Life Direction"
-  }
-];
-
-export const YOUTUBE_FEED_DATA = [
-  {
-    id: "yt-1",
-    title: "A Divine Talk — Understanding the 6th Sense Siddhi Guidance",
-    duration: "5:20",
-    views: "14K views",
-    videoId: "dQw4w9WgXcQ",
-    embedUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-    thumbnail: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=800&q=80",
-    channel: "@ADivineTalk"
-  },
-  {
-    id: "yt-2",
-    title: "How to Release Past Trauma & Energetic Cord Entanglements",
-    duration: "8:45",
-    views: "22K views",
-    videoId: "dQw4w9WgXcQ",
-    embedUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-    thumbnail: "https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&w=800&q=80",
-    channel: "@ADivineTalk"
-  },
-  {
-    id: "yt-3",
-    title: "Client Stories: Overcoming Chronic Burnout & Insomnia",
-    duration: "6:15",
-    views: "9.8K views",
-    videoId: "dQw4w9WgXcQ",
-    embedUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-    thumbnail: "https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&w=800&q=80",
-    channel: "@ADivineTalk"
-  }
-];
-
 export default function SocialFeedSection() {
   const [activePlatform, setActivePlatform] = useState('instagram'); // 'instagram' | 'youtube' | 'facebook'
-  const [activeVideoModal, setActiveVideoModal] = useState(null);
+  const [socialData, setSocialData] = useState(getSocialFeeds());
+  const [selectedYtVideo, setSelectedYtVideo] = useState(null);
+
+  useEffect(() => {
+    const handleUpdate = () => setSocialData(getSocialFeeds());
+    window.addEventListener('vbh_social_updated', handleUpdate);
+    return () => window.removeEventListener('vbh_social_updated', handleUpdate);
+  }, []);
 
   return (
     <section className="py-20 lg:py-28 bg-[#FAF8F3] text-[#2D3E40] border-y border-[#EFEBE3] relative">
@@ -113,14 +40,14 @@ export default function SocialFeedSection() {
           <div className="flex items-center justify-center gap-2 text-[#1B6B75]">
             <Sparkles size={16} />
             <span className="text-xs uppercase tracking-[0.2em] font-semibold">
-              Live Community & Feeds
+              Live Channels & Video Reflections
             </span>
           </div>
           <h2 className="text-3xl sm:text-4xl font-bold text-[#083B40]">
-            Connect With Our Social Feed
+            Our Official Social Stream
           </h2>
           <p className="text-sm sm:text-base text-[#506062] font-normal leading-relaxed">
-            Stay inspired with daily visionary guidance, short reels, and community stories directly from our official channels.
+            Watch recent video reflections, client insights, and discourses from our official Instagram, YouTube, and Facebook channels.
           </p>
         </div>
 
@@ -136,7 +63,7 @@ export default function SocialFeedSection() {
             }`}
           >
             <InstagramIcon className={activePlatform === 'instagram' ? 'w-4 h-4 text-[#C9A84E]' : 'w-4 h-4 text-pink-600'} />
-            <span>Instagram Feed & Reels (@adivinetalk)</span>
+            <span>Instagram Feed (@adivinetalk)</span>
           </button>
 
           {/* YouTube Button */}
@@ -148,7 +75,9 @@ export default function SocialFeedSection() {
                 : 'bg-white text-[#506062] border border-[#E2DCD2] hover:border-[#083B40]'
             }`}
           >
-            <YoutubeIcon className={activePlatform === 'youtube' ? 'w-4 h-4 text-[#C9A84E]' : 'w-4 h-4 text-red-600'} />
+            <svg className={activePlatform === 'youtube' ? 'w-4 h-4 text-[#C9A84E]' : 'w-4 h-4 text-red-600'} fill="currentColor" viewBox="0 0 24 24">
+              <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+            </svg>
             <span>YouTube Videos (@ADivineTalk)</span>
           </button>
 
@@ -162,23 +91,24 @@ export default function SocialFeedSection() {
             }`}
           >
             <FacebookIcon className={activePlatform === 'facebook' ? 'w-4 h-4 text-[#C9A84E]' : 'w-4 h-4 text-blue-600'} />
-            <span>Facebook Timeline (@ADivineTalk)</span>
+            <span>Facebook Page (@ADivineTalk)</span>
           </button>
         </div>
 
-        {/* 1. INSTAGRAM FEED TAB */}
+        {/* 1. INSTAGRAM FEED STREAM */}
         {activePlatform === 'instagram' && (
           <div className="space-y-8 text-left">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-amber-500 via-pink-600 to-purple-600 p-0.5 flex-shrink-0">
+            {/* Account Profile Banner */}
+            <div className="p-6 rounded-3xl bg-white border border-[#EFEBE3] shadow-xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div className="flex items-center gap-3.5">
+                <div className="w-12 h-12 rounded-full bg-gradient-to-tr from-amber-500 via-pink-600 to-purple-600 p-0.5 flex-shrink-0">
                   <div className="w-full h-full bg-white rounded-full flex items-center justify-center text-[#083B40]">
-                    <InstagramIcon className="w-5 h-5" />
+                    <InstagramIcon className="w-6 h-6" />
                   </div>
                 </div>
                 <div>
-                  <h3 className="text-base font-bold text-[#083B40]">@adivinetalk</h3>
-                  <span className="text-xs text-[#7A8B8D]">Daily Insights, Reels & Live Sessions</span>
+                  <h3 className="text-lg font-bold text-[#083B40]">@adivinetalk</h3>
+                  <p className="text-xs text-[#7A8B8D]">Official Instagram Account of HimaniK Dograa & A Divine Talk</p>
                 </div>
               </div>
 
@@ -186,80 +116,107 @@ export default function SocialFeedSection() {
                 href={SOCIAL_LINKS.instagram}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn-pill-outline text-xs py-2 px-4 cursor-pointer flex items-center gap-1.5"
+                className="btn-pill-teal text-xs py-2.5 px-5 cursor-pointer flex items-center gap-2"
               >
-                <span>Follow on Instagram</span>
-                <ExternalLink size={13} />
+                <span>View Full Reels on Instagram</span>
+                <ExternalLink size={14} />
               </a>
             </div>
 
-            {/* Reels 4-Column Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {REELS_FEED_DATA.map((reel) => (
-                <a
-                  key={reel.id}
-                  href={reel.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="rounded-3xl overflow-hidden bg-white border border-[#EFEBE3] shadow-xs hover:shadow-xl hover:border-[#C9A84E]/60 transition-all flex flex-col justify-between group cursor-pointer"
-                >
-                  {/* Vertical Reel Preview */}
-                  <div className="relative aspect-[9/14] overflow-hidden bg-gray-900">
-                    <img
-                      src={reel.thumbnail}
-                      alt={reel.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 opacity-90"
-                    />
+            {/* Instagram Reels Video Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {socialData.instagram.reels.map((reel, index) => {
+                const igId = reel.reelId || extractInstagramId(reel.reelUrl);
 
-                    {/* Dark gradient */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
-
-                    {/* Tag badge */}
-                    <div className="absolute top-3.5 left-3.5">
-                      <span className="bg-black/60 backdrop-blur-md text-white text-[10px] font-bold px-2.5 py-1 rounded-full border border-white/20">
-                        {reel.tag}
-                      </span>
-                    </div>
-
-                    {/* Play Icon */}
-                    <div className="absolute inset-0 flex items-center justify-center group-hover:scale-110 transition-transform">
-                      <div className="w-12 h-12 rounded-full bg-white/90 text-[#083B40] flex items-center justify-center shadow-lg backdrop-blur-xs">
-                        <Play size={18} className="ml-0.5 fill-[#083B40]" />
+                return (
+                  <div 
+                    key={reel.id || index}
+                    className="bg-white p-5 rounded-3xl border border-[#EFEBE3] shadow-xs flex flex-col justify-between space-y-4 hover:shadow-md transition-shadow"
+                  >
+                    {/* Embedded Reel Frame or Reel Card Visual */}
+                    {igId ? (
+                      <div className="w-full rounded-2xl overflow-hidden border border-[#EFEBE3] bg-neutral-900 aspect-[9/14] flex items-center justify-center">
+                        <iframe
+                          src={`https://www.instagram.com/reel/${igId}/embed/captioned/`}
+                          className="w-full h-full border-0"
+                          title={reel.title}
+                          allowTransparency="true"
+                          allow="encrypted-media"
+                          scrolling="no"
+                        />
                       </div>
-                    </div>
+                    ) : (
+                      <div className="w-full aspect-[9/10] rounded-2xl bg-gradient-to-b from-[#083B40] to-[#0A2628] p-6 text-white flex flex-col justify-between relative overflow-hidden group">
+                        <div className="absolute inset-0 opacity-20 bg-[radial-gradient(#C9A84E_1px,transparent_1px)] [background-size:16px_16px]" />
+                        
+                        <div className="relative z-10 flex items-center justify-between">
+                          <span className="text-[10px] font-bold tracking-widest uppercase bg-[#C9A84E]/20 text-[#E0C068] px-2.5 py-1 rounded-full border border-[#C9A84E]/30">
+                            {reel.category || 'Reel Reflection'}
+                          </span>
+                          <InstagramIcon className="w-5 h-5 text-pink-400" />
+                        </div>
 
-                    {/* Bottom metrics on Reel */}
-                    <div className="absolute bottom-3.5 inset-x-3.5 text-white space-y-2">
-                      <h4 className="text-xs sm:text-sm font-bold leading-snug line-clamp-2 text-white">
+                        <div className="relative z-10 my-auto text-center space-y-3">
+                          <div className="w-14 h-14 mx-auto rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-[#C9A84E] group-hover:scale-110 transition-transform">
+                            <Play size={22} className="fill-[#C9A84E] ml-1" />
+                          </div>
+                          <p className="text-xs font-medium text-neutral-200 line-clamp-3">
+                            "{reel.title}"
+                          </p>
+                        </div>
+
+                        <div className="relative z-10 text-center">
+                          <span className="text-[11px] text-[#C9A84E] font-medium tracking-wide">
+                            Tap to Watch on @adivinetalk
+                          </span>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Card Content & Action */}
+                    <div className="space-y-2.5">
+                      <div className="flex items-center justify-between text-xs">
+                        <span className="font-bold text-[#B88E28]">{reel.category}</span>
+                        <span className="text-[#9BAAA9]">@adivinetalk</span>
+                      </div>
+                      <h4 className="text-sm font-bold text-[#083B40] line-clamp-2">
                         {reel.title}
                       </h4>
-
-                      <div className="flex items-center justify-between text-[11px] text-gray-300 pt-1 border-t border-white/20">
-                        <div className="flex items-center gap-3">
-                          <span className="flex items-center gap-1"><Heart size={11} className="fill-pink-500 text-pink-500" /> {reel.likes}</span>
-                          <span className="flex items-center gap-1"><MessageCircle size={11} /> {reel.comments}</span>
-                        </div>
-                        <span className="font-semibold text-[#C9A84E]">{reel.views}</span>
-                      </div>
+                      <p className="text-xs text-[#506062] leading-relaxed line-clamp-2">
+                        {reel.excerpt}
+                      </p>
                     </div>
+
+                    <a
+                      href={reel.reelUrl || SOCIAL_LINKS.instagram}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="btn-pill-outline w-full text-center text-xs py-2.5 cursor-pointer flex items-center justify-center gap-1.5"
+                    >
+                      <Play size={13} className="fill-[#083B40]" />
+                      <span>Watch on Instagram</span>
+                    </a>
                   </div>
-                </a>
-              ))}
+                );
+              })}
             </div>
           </div>
         )}
 
-        {/* 2. YOUTUBE FEED TAB */}
+        {/* 2. YOUTUBE VIDEO STREAM TAB */}
         {activePlatform === 'youtube' && (
           <div className="space-y-8 text-left">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-red-600 text-white flex items-center justify-center flex-shrink-0">
-                  <YoutubeIcon className="w-5 h-5" />
+            {/* YouTube Account Header */}
+            <div className="p-6 rounded-3xl bg-white border border-[#EFEBE3] shadow-xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div className="flex items-center gap-3.5">
+                <div className="w-12 h-12 rounded-full bg-red-600 text-white flex items-center justify-center flex-shrink-0 shadow-xs">
+                  <svg className="w-6 h-6 fill-current" viewBox="0 0 24 24">
+                    <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                  </svg>
                 </div>
                 <div>
-                  <h3 className="text-base font-bold text-[#083B40]">A Divine Talk — Official YouTube</h3>
-                  <span className="text-xs text-[#7A8B8D]">Full Guidance Episodes & Client Reflections</span>
+                  <h3 className="text-lg font-bold text-[#083B40]">A Divine Talk — Official YouTube Channel</h3>
+                  <p className="text-xs text-[#7A8B8D]">Video discourses, visionary guidance, and spiritual clarity</p>
                 </div>
               </div>
 
@@ -267,71 +224,151 @@ export default function SocialFeedSection() {
                 href={SOCIAL_LINKS.youtube}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn-pill-teal text-xs py-2 px-4 cursor-pointer flex items-center gap-1.5"
+                className="btn-pill-teal text-xs py-2.5 px-5 cursor-pointer flex items-center gap-2"
               >
                 <span>Subscribe on YouTube</span>
-                <ExternalLink size={13} />
+                <ExternalLink size={14} />
               </a>
             </div>
 
-            {/* Video Cards Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {YOUTUBE_FEED_DATA.map((vid) => (
-                <div
-                  key={vid.id}
-                  className="rounded-3xl bg-white border border-[#EFEBE3] overflow-hidden shadow-xs hover:shadow-xl hover:border-[#C9A84E] transition-all flex flex-col justify-between group"
-                >
-                  <div className="relative aspect-video overflow-hidden bg-black">
-                    <img
-                      src={vid.thumbnail}
-                      alt={vid.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 opacity-90"
-                    />
-                    <div className="absolute inset-0 bg-black/30"></div>
-
-                    {/* Duration badge */}
-                    <div className="absolute bottom-3 right-3 bg-black/80 text-white text-[10px] font-bold px-2 py-0.5 rounded">
-                      {vid.duration}
-                    </div>
-
-                    {/* Play Button */}
-                    <button
-                      onClick={() => setActiveVideoModal(vid.embedUrl)}
-                      className="absolute inset-0 flex items-center justify-center cursor-pointer group-hover:scale-110 transition-transform"
-                      aria-label="Play YouTube Video"
-                    >
-                      <div className="w-12 h-12 rounded-full bg-red-600 text-white flex items-center justify-center shadow-lg">
-                        <Play size={20} className="ml-0.5 fill-white" />
-                      </div>
-                    </button>
-                  </div>
-
-                  <div className="p-5 space-y-2">
-                    <h4 className="text-base font-bold text-[#083B40] leading-snug line-clamp-2">
-                      {vid.title}
-                    </h4>
-                    <div className="flex items-center justify-between text-xs text-[#7A8B8D] pt-1">
-                      <span>{vid.channel}</span>
-                      <span>{vid.views}</span>
-                    </div>
-                  </div>
+            {/* YouTube Featured Video & Playlist Grid */}
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+              
+              {/* Featured YouTube Video Embed (7 cols) */}
+              <div className="lg:col-span-7 bg-white p-6 rounded-3xl border border-[#EFEBE3] shadow-xs space-y-4">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-bold text-[#083B40] uppercase tracking-wider block">
+                    Featured Video Stream
+                  </span>
+                  <span className="text-xs text-[#1B6B75] font-semibold flex items-center gap-1">
+                    <Sparkles size={13} /> Official Channel
+                  </span>
                 </div>
-              ))}
+
+                {(() => {
+                  const currentVideo = selectedYtVideo || socialData.youtube.videos[0];
+                  const ytid = currentVideo?.videoId 
+                    ? extractYouTubeId(currentVideo.videoId) 
+                    : extractYouTubeId(currentVideo?.videoUrl) || extractYouTubeId(socialData.youtube.featuredVideoUrl);
+
+                  if (ytid) {
+                    return (
+                      <div className="aspect-video w-full rounded-2xl overflow-hidden shadow-md bg-black">
+                        <iframe
+                          className="w-full h-full border-0"
+                          src={`https://www.youtube-nocookie.com/embed/${ytid}?rel=0&modestbranding=1`}
+                          title={currentVideo?.title || "A Divine Talk YouTube Channel"}
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                          allowFullScreen
+                        />
+                      </div>
+                    );
+                  }
+
+                  return (
+                    <div className="aspect-video w-full rounded-2xl bg-gradient-to-br from-[#083B40] via-[#0D4D54] to-[#052629] p-8 text-white flex flex-col justify-between relative overflow-hidden">
+                      <div className="space-y-2">
+                        <span className="text-[11px] font-bold text-[#C9A84E] uppercase tracking-widest">
+                          A Divine Talk • YouTube Hub
+                        </span>
+                        <h4 className="text-lg sm:text-xl font-bold">
+                          {currentVideo?.title || "Visionary Discourses & Consultations with HimaniK Dograa"}
+                        </h4>
+                        <p className="text-xs sm:text-sm text-neutral-300">
+                          {currentVideo?.description || "Explore transformative perspectives on life crossroads, relational healing, and finding clarity."}
+                        </p>
+                      </div>
+
+                      <div className="flex items-center gap-3 pt-4">
+                        <a
+                          href={currentVideo?.videoUrl || SOCIAL_LINKS.youtube}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="btn-pill-teal text-xs py-2.5 px-5 cursor-pointer flex items-center gap-2 bg-[#C9A84E] text-[#083B40] font-bold hover:bg-[#b59540]"
+                        >
+                          <Play size={14} className="fill-[#083B40]" />
+                          <span>Watch on YouTube Channel</span>
+                        </a>
+                      </div>
+                    </div>
+                  );
+                })()}
+
+                <div className="pt-2 text-xs text-[#6B7C7E] flex items-center justify-between">
+                  <span>To add specific YouTube video IDs or Shorts, configure them in the Admin Panel.</span>
+                  <a 
+                    href={SOCIAL_LINKS.youtube}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-[#1B6B75] font-semibold hover:underline flex items-center gap-1"
+                  >
+                    <span>@ADivineTalk</span>
+                    <ExternalLink size={12} />
+                  </a>
+                </div>
+              </div>
+
+              {/* Video Categories & Playlist List (5 cols) */}
+              <div className="lg:col-span-5 space-y-4">
+                <span className="text-xs font-bold text-[#083B40] uppercase tracking-wider block">
+                  Channel Video Topics
+                </span>
+
+                {socialData.youtube.videos.map((vid, idx) => (
+                  <div 
+                    key={vid.id || idx}
+                    onClick={() => setSelectedYtVideo(vid)}
+                    className={`p-4 rounded-2xl border transition-all cursor-pointer text-left ${
+                      (selectedYtVideo?.id === vid.id || (!selectedYtVideo && idx === 0))
+                        ? 'bg-white border-[#1B6B75] shadow-md ring-1 ring-[#1B6B75]/20'
+                        : 'bg-white/80 border-[#EFEBE3] hover:bg-white hover:border-[#CBD5E1]'
+                    }`}
+                  >
+                    <div className="flex items-start justify-between gap-2 mb-1">
+                      <span className="text-[10px] font-bold text-[#B88E28] uppercase tracking-wider">
+                        {vid.category || 'Topic'}
+                      </span>
+                      <Play size={12} className="text-[#1B6B75] fill-[#1B6B75] mt-0.5" />
+                    </div>
+                    <h5 className="text-xs sm:text-sm font-bold text-[#083B40] mb-1">
+                      {vid.title}
+                    </h5>
+                    <p className="text-[11px] text-[#506062] line-clamp-2">
+                      {vid.description}
+                    </p>
+                  </div>
+                ))}
+
+                <div className="p-4 rounded-2xl bg-white border border-[#EFEBE3] space-y-2 text-left">
+                  <span className="text-xs font-bold text-[#083B40] block">⚡ 6th Sense Siddhi & Consultation Topics</span>
+                  <p className="text-xs text-[#506062]">Direct intuitive perception mechanics that operate without requiring horoscope or personal birth records.</p>
+                </div>
+
+                <a
+                  href={SOCIAL_LINKS.youtube}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-pill-teal w-full text-center text-xs py-2.5 cursor-pointer block"
+                >
+                  Visit Full YouTube Video Library
+                </a>
+              </div>
+
             </div>
           </div>
         )}
 
-        {/* 3. FACEBOOK FEED TAB */}
+        {/* 3. FACEBOOK LIVE PAGE TAB */}
         {activePlatform === 'facebook' && (
           <div className="space-y-8 text-left">
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center flex-shrink-0">
-                  <FacebookIcon className="w-5 h-5" />
+            <div className="p-6 rounded-3xl bg-white border border-[#EFEBE3] shadow-xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div className="flex items-center gap-3.5">
+                <div className="w-12 h-12 rounded-full bg-blue-600 text-white flex items-center justify-center flex-shrink-0 shadow-xs">
+                  <FacebookIcon className="w-6 h-6" />
                 </div>
                 <div>
-                  <h3 className="text-base font-bold text-[#083B40]">A Divine Talk — Facebook Page</h3>
-                  <span className="text-xs text-[#7A8B8D]">Community Updates, Reviews & Posts</span>
+                  <h3 className="text-lg font-bold text-[#083B40]">A Divine Talk — Facebook Page</h3>
+                  <p className="text-xs text-[#7A8B8D]">Live updates, community events, and reviews</p>
                 </div>
               </div>
 
@@ -339,22 +376,21 @@ export default function SocialFeedSection() {
                 href={SOCIAL_LINKS.facebook}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn-pill-outline text-xs py-2 px-4 cursor-pointer flex items-center gap-1.5"
+                className="btn-pill-teal text-xs py-2.5 px-5 cursor-pointer flex items-center gap-2"
               >
-                <span>Visit Facebook Page</span>
-                <ExternalLink size={13} />
+                <span>Open @ADivineTalk on Facebook</span>
+                <ExternalLink size={14} />
               </a>
             </div>
 
-            {/* Embedded Facebook Stream & Reviews Layout */}
+            {/* Embedded Live Facebook Feed */}
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
               
-              {/* Left Column: Live Facebook Embed Iframe (7 cols) */}
               <div className="lg:col-span-7 bg-white p-6 rounded-3xl border border-[#EFEBE3] shadow-xs flex flex-col items-center">
                 <span className="text-xs font-bold text-[#083B40] uppercase tracking-wider block mb-4 self-start">
                   Live Facebook Feed Stream
                 </span>
-                
+
                 <div className="w-full max-w-[500px] overflow-hidden rounded-2xl border border-gray-100 shadow-2xs">
                   <iframe
                     src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2FADivineTalk%2F&tabs=timeline&width=500&height=500&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true"
@@ -370,10 +406,9 @@ export default function SocialFeedSection() {
                 </div>
               </div>
 
-              {/* Right Column: Verified Facebook Community Reflections (5 cols) */}
               <div className="lg:col-span-5 space-y-4">
                 <span className="text-xs font-bold text-[#083B40] uppercase tracking-wider block mb-2">
-                  Featured Community Reflections
+                  Verified Community Reviews
                 </span>
 
                 <div className="p-5 rounded-2xl bg-white border border-[#EFEBE3] shadow-2xs space-y-3">
@@ -382,7 +417,7 @@ export default function SocialFeedSection() {
                     <span>Facebook Recommendation</span>
                   </div>
                   <p className="text-xs sm:text-sm text-[#506062] leading-relaxed">
-                    "I had reached a point where nothing was making sense in my career. Himani’s guidance was clear, direct, and completely free of fear. She pointed out things no one else knew."
+                    "I had reached a point where nothing was making sense in my career. Himani’s guidance was clear, direct, and completely free of fear."
                   </p>
                 </div>
 
@@ -392,7 +427,7 @@ export default function SocialFeedSection() {
                     <span>Facebook Recommendation</span>
                   </div>
                   <p className="text-xs sm:text-sm text-[#506062] leading-relaxed">
-                    "The fact that she doesn't require any birth charts or personal history is incredible. Her insights into our family dispute gave us the peace and direction we desperately needed."
+                    "Her insights into our family dispute gave us the peace and direction we desperately needed."
                   </p>
                 </div>
 
@@ -406,29 +441,6 @@ export default function SocialFeedSection() {
                 </a>
               </div>
 
-            </div>
-          </div>
-        )}
-
-        {/* Video Lightbox Modal */}
-        {activeVideoModal && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-sm">
-            <div className="relative w-full max-w-3xl bg-black rounded-3xl overflow-hidden shadow-2xl">
-              <button
-                onClick={() => setActiveVideoModal(null)}
-                className="absolute top-4 right-4 z-10 p-2.5 rounded-full bg-black/70 text-white hover:bg-black cursor-pointer"
-              >
-                ✕
-              </button>
-              <div className="aspect-video w-full">
-                <iframe
-                  src={`${activeVideoModal}?autoplay=1`}
-                  title="YouTube Video Player"
-                  className="w-full h-full border-0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                />
-              </div>
             </div>
           </div>
         )}

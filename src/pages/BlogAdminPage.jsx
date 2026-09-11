@@ -1,12 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { 
   Plus, Edit3, Trash2, Eye, CheckCircle, ArrowLeft, RefreshCw, 
-  Upload, Sparkles, BookOpen, Lock, LogOut, Key, User, ShieldAlert
+  Upload, Sparkles, BookOpen, Lock, LogOut, Key, User, ShieldAlert,
+  Film, Video, Share2, Play, Save
 } from 'lucide-react';
 import { 
   getBlogPosts, createBlogPost, updateBlogPost, deleteBlogPost, resetBlogPostsToDefault 
 } from '../utils/blogStorage';
-import { BRAND_ASSETS } from '../data/siteContent';
+import { 
+  getSocialFeeds, saveSocialFeeds, resetSocialFeedsToDefault, 
+  extractInstagramId, extractYouTubeId 
+} from '../utils/socialStorage';
+import { BRAND_ASSETS, SOCIAL_LINKS } from '../data/siteContent';
 
 const AUTH_KEY = 'vbh_admin_authenticated_v1';
 const DEFAULT_ADMIN_EMAIL = 'admin@visionsbyhimani.com';
@@ -19,11 +24,17 @@ export default function BlogAdminPage({ onNavigate }) {
   const [loginPassword, setLoginPassword] = useState('');
   const [loginError, setLoginError] = useState('');
 
-  // Admin Studio State
+  // Main Studio Mode: 'blog' | 'social'
+  const [studioSection, setStudioSection] = useState('blog');
+
+  // Blog Studio State
   const [posts, setPosts] = useState([]);
   const [activeTab, setActiveTab] = useState('list'); // 'list' | 'editor'
   const [editingPostId, setEditingPostId] = useState(null);
   const [toastMessage, setToastMessage] = useState(null);
+
+  // Social Feeds State
+  const [socialData, setSocialData] = useState(getSocialFeeds());
 
   // Form State
   const [formData, setFormData] = useState({
@@ -45,6 +56,7 @@ export default function BlogAdminPage({ onNavigate }) {
     if (savedAuth === 'true') {
       setIsAuthenticated(true);
       loadPosts();
+      setSocialData(getSocialFeeds());
     }
   }, []);
 
@@ -171,6 +183,39 @@ export default function BlogAdminPage({ onNavigate }) {
       ...prev,
       content: prev.content ? `${prev.content}\n\n${snippet}` : snippet
     }));
+  };
+
+  // --- SOCIAL FEED HANDLERS ---
+  const handleSaveSocialFeeds = (e) => {
+    e.preventDefault();
+    saveSocialFeeds(socialData);
+    showToast('Social feeds & video links updated successfully!');
+  };
+
+  const handleResetSocialFeeds = () => {
+    if (window.confirm('Reset social links and video feeds to default?')) {
+      const defaults = resetSocialFeedsToDefault();
+      setSocialData(defaults);
+      showToast('Social feeds reset to defaults.');
+    }
+  };
+
+  const updateReelItem = (index, field, value) => {
+    const newReels = [...socialData.instagram.reels];
+    newReels[index] = { ...newReels[index], [field]: value };
+    setSocialData({
+      ...socialData,
+      instagram: { ...socialData.instagram, reels: newReels }
+    });
+  };
+
+  const updateYtItem = (index, field, value) => {
+    const newVids = [...socialData.youtube.videos];
+    newVids[index] = { ...newVids[index], [field]: value };
+    setSocialData({
+      ...socialData,
+      youtube: { ...socialData.youtube, videos: newVids }
+    });
   };
 
   // -------------------------------------------------------------
@@ -304,35 +349,59 @@ export default function BlogAdminPage({ onNavigate }) {
               </span>
             </div>
             <h1 className="text-2xl sm:text-3xl font-bold text-[#083B40]">
-              Blog Publishing & Article Manager
+              {studioSection === 'blog' ? 'Blog Publishing Studio' : 'Social Feeds & Video Hub'}
             </h1>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex flex-wrap items-center gap-2.5">
+            {/* Studio Switcher Tabs */}
+            <div className="bg-white p-1 rounded-full border border-[#E2DCD2] flex items-center gap-1 shadow-2xs">
+              <button
+                onClick={() => setStudioSection('blog')}
+                className={`px-3.5 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+                  studioSection === 'blog' ? 'bg-[#083B40] text-white' : 'text-[#506062] hover:text-[#083B40]'
+                }`}
+              >
+                <BookOpen size={13} />
+                <span>Blog Articles</span>
+              </button>
+              <button
+                onClick={() => setStudioSection('social')}
+                className={`px-3.5 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+                  studioSection === 'social' ? 'bg-[#083B40] text-white' : 'text-[#506062] hover:text-[#083B40]'
+                }`}
+              >
+                <Film size={13} />
+                <span>Social Feeds & Videos</span>
+              </button>
+            </div>
+
             <button
-              onClick={() => onNavigate('/blog')}
+              onClick={() => onNavigate('/')}
               className="btn-pill-outline text-xs py-2 px-3.5 cursor-pointer"
             >
               <Eye size={14} />
-              <span>View Public Blog</span>
+              <span>Live Site</span>
             </button>
 
-            {activeTab === 'list' ? (
-              <button
-                onClick={handleStartNewPost}
-                className="btn-pill-teal text-xs py-2 px-4 cursor-pointer"
-              >
-                <Plus size={14} />
-                <span>Write New Article</span>
-              </button>
-            ) : (
-              <button
-                onClick={() => setActiveTab('list')}
-                className="btn-pill-outline text-xs py-2 px-4 cursor-pointer"
-              >
-                <ArrowLeft size={14} />
-                <span>Back to Articles</span>
-              </button>
+            {studioSection === 'blog' && (
+              activeTab === 'list' ? (
+                <button
+                  onClick={handleStartNewPost}
+                  className="btn-pill-teal text-xs py-2 px-4 cursor-pointer"
+                >
+                  <Plus size={14} />
+                  <span>Write New Article</span>
+                </button>
+              ) : (
+                <button
+                  onClick={() => setActiveTab('list')}
+                  className="btn-pill-outline text-xs py-2 px-4 cursor-pointer"
+                >
+                  <ArrowLeft size={14} />
+                  <span>Back to Articles</span>
+                </button>
+              )
             )}
 
             {/* Log Out Button */}
@@ -345,6 +414,10 @@ export default function BlogAdminPage({ onNavigate }) {
             </button>
           </div>
         </div>
+
+        {/* SECTION A: BLOG ARTICLES MANAGER */}
+        {studioSection === 'blog' && (
+          <>
 
         {/* TAB 1: LIST / MANAGE ALL ARTICLES */}
         {activeTab === 'list' && (
@@ -670,6 +743,210 @@ export default function BlogAdminPage({ onNavigate }) {
 
           </div>
         )}
+      </>
+    )}
+
+    {/* ========================================================= */}
+    {/* SECTION B: SOCIAL FEEDS & VIDEO HUB MANAGER */}
+    {/* ========================================================= */}
+    {studioSection === 'social' && (
+      <div className="mt-8 space-y-8 text-left max-w-5xl mx-auto">
+        
+        {/* Explanatory Banner */}
+        <div className="p-6 sm:p-8 rounded-3xl bg-[#083B40] text-white space-y-3 shadow-md">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2 text-[#C9A84E]">
+              <Sparkles size={18} />
+              <span className="text-xs uppercase tracking-widest font-bold">
+                Direct Video & Social Stream Sync
+              </span>
+            </div>
+            <button
+              type="button"
+              onClick={handleResetSocialFeeds}
+              className="text-xs text-neutral-300 hover:text-white underline cursor-pointer"
+            >
+              Reset to Defaults
+            </button>
+          </div>
+          <h2 className="text-xl sm:text-2xl font-bold">
+            Configure Live Instagram Reels & YouTube Videos
+          </h2>
+          <p className="text-xs sm:text-sm text-neutral-300 leading-relaxed max-w-3xl">
+            Paste your exact Instagram Reel links (e.g. <code className="bg-white/10 px-1.5 py-0.5 rounded text-[#C9A84E]">https://www.instagram.com/reel/Cxxxxxx/</code>) or YouTube Video/Shorts links (e.g. <code className="bg-white/10 px-1.5 py-0.5 rounded text-[#C9A84E]">https://youtu.be/xxxxxx</code>) below. The homepage will automatically embed and stream the playable video players!
+          </p>
+        </div>
+
+        <form onSubmit={handleSaveSocialFeeds} className="space-y-8">
+          
+          {/* 1. INSTAGRAM REELS MANAGER */}
+          <div className="bg-white p-6 sm:p-8 rounded-3xl border border-[#EFEBE3] shadow-xs space-y-6">
+            <div className="flex items-center justify-between pb-4 border-b border-gray-100">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-amber-500 via-pink-600 to-purple-600 p-0.5 text-white flex items-center justify-center">
+                  <div className="w-full h-full bg-white rounded-full flex items-center justify-center text-pink-600">
+                    <Film size={18} />
+                  </div>
+                </div>
+                <div>
+                  <h3 className="text-lg font-bold text-[#083B40]">Instagram Reels Configuration</h3>
+                  <p className="text-xs text-[#7A8B8D]">Account: {socialData.instagram.handle}</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {socialData.instagram.reels.map((reel, idx) => (
+                <div key={idx} className="p-4 rounded-2xl bg-[#FAF8F3] border border-[#EFEBE3] space-y-3 text-left">
+                  <span className="text-xs font-bold text-[#083B40] uppercase tracking-wider block">
+                    Reel Slot #{idx + 1}
+                  </span>
+
+                  <div className="space-y-1">
+                    <label className="text-[11px] font-semibold text-[#506062] block">
+                      Reel or Post URL:
+                    </label>
+                    <input
+                      type="url"
+                      value={reel.reelUrl || ''}
+                      onChange={(e) => updateReelItem(idx, 'reelUrl', e.target.value)}
+                      placeholder="https://www.instagram.com/reel/Cxxxxxx/"
+                      className="w-full px-3 py-2 rounded-xl border border-gray-200 text-xs bg-white focus:outline-none focus:border-[#083B40]"
+                    />
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="text-[11px] font-semibold text-[#506062] block">
+                      Video Title / Topic:
+                    </label>
+                    <input
+                      type="text"
+                      value={reel.title || ''}
+                      onChange={(e) => updateReelItem(idx, 'title', e.target.value)}
+                      placeholder="Title of reel..."
+                      className="w-full px-3 py-2 rounded-xl border border-gray-200 text-xs bg-white focus:outline-none focus:border-[#083B40]"
+                    />
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="text-[11px] font-semibold text-[#506062] block">
+                      Category Badge:
+                    </label>
+                    <input
+                      type="text"
+                      value={reel.category || ''}
+                      onChange={(e) => updateReelItem(idx, 'category', e.target.value)}
+                      placeholder="e.g. Visionary Insights"
+                      className="w-full px-3 py-2 rounded-xl border border-gray-200 text-xs bg-white focus:outline-none focus:border-[#083B40]"
+                    />
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="text-[11px] font-semibold text-[#506062] block">
+                      Short Description:
+                    </label>
+                    <textarea
+                      rows={2}
+                      value={reel.excerpt || ''}
+                      onChange={(e) => updateReelItem(idx, 'excerpt', e.target.value)}
+                      placeholder="Brief description..."
+                      className="w-full px-3 py-2 rounded-xl border border-gray-200 text-xs bg-white focus:outline-none focus:border-[#083B40]"
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* 2. YOUTUBE VIDEO MANAGER */}
+          <div className="bg-white p-6 sm:p-8 rounded-3xl border border-[#EFEBE3] shadow-xs space-y-6">
+            <div className="flex items-center justify-between pb-4 border-b border-gray-100">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-red-600 text-white flex items-center justify-center">
+                  <Video size={18} />
+                </div>
+                <div>
+                  <h3 className="text-lg font-bold text-[#083B40]">YouTube Videos & Shorts Configuration</h3>
+                  <p className="text-xs text-[#7A8B8D]">Channel: {socialData.youtube.handle}</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Featured Video */}
+              <div className="p-5 rounded-2xl bg-[#FAF8F3] border border-[#EFEBE3] space-y-3">
+                <span className="text-xs font-bold text-[#083B40] uppercase tracking-wider block">
+                  Featured YouTube Video
+                </span>
+                <div className="space-y-1">
+                  <label className="text-[11px] font-semibold text-[#506062] block">
+                    YouTube Video URL or Shorts Link:
+                  </label>
+                  <input
+                    type="url"
+                    value={socialData.youtube.featuredVideoUrl || ''}
+                    onChange={(e) => setSocialData({
+                      ...socialData,
+                      youtube: { ...socialData.youtube, featuredVideoUrl: e.target.value }
+                    })}
+                    placeholder="https://www.youtube.com/watch?v=xxxxxx"
+                    className="w-full px-3 py-2 rounded-xl border border-gray-200 text-xs bg-white focus:outline-none focus:border-[#083B40]"
+                  />
+                </div>
+                <span className="text-[11px] text-[#7A8B8D] block">
+                  Supports full YouTube URLs, shortened youtu.be links, or Shorts links.
+                </span>
+              </div>
+
+              {/* Topic Videos */}
+              {socialData.youtube.videos.map((vid, idx) => (
+                <div key={idx} className="p-5 rounded-2xl bg-[#FAF8F3] border border-[#EFEBE3] space-y-3">
+                  <span className="text-xs font-bold text-[#083B40] uppercase tracking-wider block">
+                    Topic Video #{idx + 1}
+                  </span>
+                  <div className="space-y-1">
+                    <label className="text-[11px] font-semibold text-[#506062] block">
+                      YouTube Video URL:
+                    </label>
+                    <input
+                      type="url"
+                      value={vid.videoUrl || ''}
+                      onChange={(e) => updateYtItem(idx, 'videoUrl', e.target.value)}
+                      placeholder="https://youtu.be/xxxxxx"
+                      className="w-full px-3 py-2 rounded-xl border border-gray-200 text-xs bg-white focus:outline-none focus:border-[#083B40]"
+                    />
+                  </div>
+                  <div className="space-y-1">
+                    <label className="text-[11px] font-semibold text-[#506062] block">
+                      Title:
+                    </label>
+                    <input
+                      type="text"
+                      value={vid.title || ''}
+                      onChange={(e) => updateYtItem(idx, 'title', e.target.value)}
+                      className="w-full px-3 py-2 rounded-xl border border-gray-200 text-xs bg-white focus:outline-none focus:border-[#083B40]"
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Save Button */}
+          <div className="flex items-center justify-end gap-4 pt-2">
+            <button
+              type="submit"
+              className="btn-pill-teal text-sm py-3 px-8 cursor-pointer flex items-center gap-2 shadow-md"
+            >
+              <Save size={16} />
+              <span>Save All Social Stream Settings</span>
+            </button>
+          </div>
+
+        </form>
+
+      </div>
+    )}
 
       </div>
     </div>
