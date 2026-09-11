@@ -17,9 +17,9 @@ export const BRAND_ASSETS = {
 };
 
 export const SOCIAL_LINKS = {
-  instagram: "https://instagram.com",
-  facebook: "https://facebook.com",
-  youtube: "https://youtube.com",
+  instagram: "https://www.instagram.com/adivinetalk/",
+  facebook: "https://www.facebook.com/ADivineTalk/",
+  youtube: "https://www.youtube.com/@ADivineTalk",
   whatsapp: "https://wa.me/919883813143",
 };
 
@@ -212,29 +212,33 @@ export const TESTIMONIALS = [
     id: 1,
     quote: "I was going through a very confusing phase in my life. The session helped me see things so clearly. I felt a huge weight lift off my shoulders. Truly life changing.",
     author: "Private Client",
-    source: "Instagram Verified Feedback",
-    platform: "Instagram"
+    source: "Instagram (@adivinetalk)",
+    platform: "Instagram",
+    socialUrl: "https://www.instagram.com/adivinetalk/"
   },
   {
     id: 2,
     quote: "When I was feeling helpless and traditional avenues failed, Himani was a true guiding light. In just 20 minutes, she got to the core of the issue without asking a single personal detail.",
     author: "Consultation Client",
     source: "WhatsApp Reflection",
-    platform: "WhatsApp"
+    platform: "WhatsApp",
+    socialUrl: "https://wa.me/919883813143"
   },
   {
     id: 3,
     quote: "Himani guided me through my career transition with QuessCorp. The timeline and clarity she gave me during our conversation was remarkably accurate. Highly recommended.",
     author: "Corporate Executive",
-    source: "YouTube Feedback",
-    platform: "YouTube"
+    source: "YouTube (@ADivineTalk)",
+    platform: "YouTube",
+    socialUrl: "https://www.youtube.com/@ADivineTalk"
   },
   {
     id: 4,
     quote: "In just two sessions, she identified the exact misunderstanding damaging our marriage. Two years later, our communication is completely transformed. An invaluable mentor.",
     author: "Marital Guidance Client",
-    source: "Facebook Community Review",
-    platform: "Facebook"
+    source: "Facebook (ADivineTalk)",
+    platform: "Facebook",
+    socialUrl: "https://www.facebook.com/ADivineTalk/"
   }
 ];
 

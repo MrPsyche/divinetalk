@@ -7,6 +7,7 @@ import RealLifeSituations from '../components/RealLifeSituations';
 import ProcessTimeline from '../components/ProcessTimeline';
 import FoundersSection from '../components/FoundersSection';
 import SacredHealingPreview from '../components/SacredHealingPreview';
+import SocialFeedSection from '../components/SocialFeedSection';
 import TestimonialsCarousel from '../components/TestimonialsCarousel';
 import FaqAccordion from '../components/FaqAccordion';
 
@@ -54,15 +55,20 @@ export default function HomePage({ onOpenBooking, onNavigate }) {
         onOpenBooking={onOpenBooking} 
       />
 
-      {/* 08: A Sacred Healing Vertical (Placed exactly before Testimonials) */}
+      {/* 08: A Sacred Healing Vertical */}
       <SacredHealingPreview 
         onOpenBooking={onOpenBooking} 
       />
 
-      {/* 09: Client Experiences & Social Testimonials */}
+      {/* 09: Live Social Feed Section (Instagram Reels, YouTube Videos, Facebook Timeline) */}
+      <div id="social-feeds">
+        <SocialFeedSection />
+      </div>
+
+      {/* 10: Client Experiences & Social Testimonials */}
       <TestimonialsCarousel />
 
-      {/* 10: Frequently Asked Questions */}
+      {/* 11: Frequently Asked Questions */}
       <FaqAccordion 
         onOpenBooking={onOpenBooking} 
       />
