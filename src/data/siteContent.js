@@ -21,7 +21,7 @@ export const SOCIAL_LINKS = {
   instagram: "https://www.instagram.com/adivinetalk/",
   facebook: "https://www.facebook.com/ADivineTalk/",
   youtube: "https://www.youtube.com/@ADivineTalk",
-  whatsapp: "https://wa.me/919883813143",
+  whatsapp: "https://wa.me/919319238007",
 };
 
 export const HERO_CONTENT = {
@@ -223,7 +223,7 @@ export const TESTIMONIALS = [
     author: "Consultation Client",
     source: "WhatsApp Reflection",
     platform: "WhatsApp",
-    socialUrl: "https://wa.me/919883813143"
+    socialUrl: "https://wa.me/919319238007"
   },
   {
     id: 3,

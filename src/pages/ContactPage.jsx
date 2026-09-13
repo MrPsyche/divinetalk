@@ -331,31 +331,31 @@ export default function ContactPage({ onOpenBooking, onNavigate }) {
             </a>
           </div>
 
-          {/* WhatsApp Pre-Booking */}
+          {/* WhatsApp Support */}
           <div className="bg-white p-6 rounded-2xl border border-[#EFEBE3] shadow-sm hover:shadow-md transition-shadow space-y-3">
             <div className="w-10 h-10 rounded-xl bg-[#E8F8EE] text-[#25D366] flex items-center justify-center">
               <MessageCircle size={18} />
             </div>
             <div>
-              <span className="text-xs font-bold text-[#083B40] block">WhatsApp Pre-Booking</span>
+              <span className="text-xs font-bold text-[#083B40] block">WhatsApp Support</span>
               <p className="text-xs text-[#7A8B8D]">Quick answers & scheduling</p>
             </div>
             <a href={SOCIAL_LINKS.whatsapp} target="_blank" rel="noopener noreferrer" className="text-sm font-bold text-[#083B40] hover:text-[#25D366] block">
-              +91 98838 13143
+              +91 93192 38007
             </a>
           </div>
 
-          {/* WhatsApp Rescheduling */}
+          {/* Rescheduling Desk */}
           <div className="bg-white p-6 rounded-2xl border border-[#EFEBE3] shadow-sm hover:shadow-md transition-shadow space-y-3">
             <div className="w-10 h-10 rounded-xl bg-[#FAF0D7] text-[#B88E28] flex items-center justify-center">
               <Clock size={18} />
             </div>
             <div>
               <span className="text-xs font-bold text-[#083B40] block">Rescheduling Desk</span>
-              <p className="text-xs text-[#7A8B8D]">Min 48h notice policy</p>
+              <p className="text-xs text-[#7A8B8D]">Min 48h notice via WhatsApp</p>
             </div>
-            <a href={`https://wa.me/917510997770`} target="_blank" rel="noopener noreferrer" className="text-sm font-bold text-[#083B40] hover:text-[#B88E28] block">
-              +91 75109 97770
+            <a href={SOCIAL_LINKS.whatsapp} target="_blank" rel="noopener noreferrer" className="text-sm font-bold text-[#083B40] hover:text-[#B88E28] block">
+              +91 93192 38007
             </a>
           </div>
 

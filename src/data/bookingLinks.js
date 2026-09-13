@@ -21,9 +21,9 @@ export const BOOKING_DESTINATIONS = {
 export const CONTACT_INFO = {
   address: "64 (Ground Floor), Block L, Sector 25, NOIDA - 201301, Uttar Pradesh, India",
   phoneNumbers: ["+91-9319238007"],
-  email: "Admin@adivinetalk.com",
-  whatsappPreBooking: "+91 98838 13143",
-  whatsappRescheduling: "+91 75109 97770",
+  email: "admin@visionsbyhimani.com",
+  whatsappPreBooking: "+91 93192 38007",
+  whatsappRescheduling: "+91 93192 38007",
   policy: {
     refunds: "No refunds once a booking is confirmed.",
     rescheduling: "Rescheduling must be requested at least 48 hours in advance via WhatsApp.",
