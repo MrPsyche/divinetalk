@@ -8,6 +8,7 @@ import BlogPage from './pages/BlogPage';
 import BlogPostDetail from './pages/BlogPostDetail';
 import BlogAdminPage from './pages/BlogAdminPage';
 import ContactPage from './pages/ContactPage';
+import EngagementPopup from './components/EngagementPopup';
 
 export default function App() {
   const [currentPath, setCurrentPath] = useState(window.location.pathname || '/');
@@ -148,6 +149,14 @@ export default function App() {
         <Footer
           onNavigate={handleNavigate}
           onOpenBooking={handleOpenBooking}
+        />
+      )}
+
+      {/* Scroll Engagement Popup */}
+      {!isAdminPage && (
+        <EngagementPopup
+          onOpenBooking={handleOpenBooking}
+          onNavigate={handleNavigate}
         />
       )}
 

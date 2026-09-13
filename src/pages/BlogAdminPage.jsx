@@ -2,7 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { 
   Plus, Edit3, Trash2, Eye, CheckCircle, ArrowLeft, RefreshCw, 
   Upload, Sparkles, BookOpen, Lock, LogOut, Key, User, ShieldAlert,
-  Film, Video, Share2, Play, Save
+  Film, Video, Share2, Play, Save, Inbox, MessageSquare, Download,
+  Filter, Search, PhoneCall, Mail, ExternalLink, Calendar, MapPin, X,
+  Clock, MessageCircle, Navigation, Shield
 } from 'lucide-react';
 import { 
   getBlogPosts, createBlogPost, updateBlogPost, deleteBlogPost, resetBlogPostsToDefault 
@@ -11,6 +13,9 @@ import {
   getSocialFeeds, saveSocialFeeds, resetSocialFeedsToDefault, 
   extractInstagramId, extractYouTubeId 
 } from '../utils/socialStorage';
+import { 
+  getLeads, updateLeadStatus, deleteLead, resetLeadsToDefault, exportLeadsToCsv 
+} from '../utils/leadsStorage';
 import { BRAND_ASSETS, SOCIAL_LINKS } from '../data/siteContent';
 
 const AUTH_KEY = 'vbh_admin_authenticated_v1';
@@ -24,7 +29,7 @@ export default function BlogAdminPage({ onNavigate }) {
   const [loginPassword, setLoginPassword] = useState('');
   const [loginError, setLoginError] = useState('');
 
-  // Main Studio Mode: 'blog' | 'social'
+  // Main Studio Mode: 'blog' | 'social' | 'leads'
   const [studioSection, setStudioSection] = useState('blog');
 
   // Blog Studio State
@@ -35,6 +40,12 @@ export default function BlogAdminPage({ onNavigate }) {
 
   // Social Feeds State
   const [socialData, setSocialData] = useState(getSocialFeeds());
+
+  // Leads State
+  const [leads, setLeads] = useState(getLeads());
+  const [leadFilter, setLeadFilter] = useState('all');
+  const [leadSearch, setLeadSearch] = useState('');
+  const [selectedLeadModal, setSelectedLeadModal] = useState(null);
 
   // Form State
   const [formData, setFormData] = useState({
@@ -57,8 +68,13 @@ export default function BlogAdminPage({ onNavigate }) {
       setIsAuthenticated(true);
       loadPosts();
       setSocialData(getSocialFeeds());
+      loadLeads();
     }
   }, []);
+
+  const loadLeads = () => {
+    setLeads(getLeads());
+  };
 
   const loadPosts = () => {
     const list = getBlogPosts();
@@ -95,6 +111,64 @@ export default function BlogAdminPage({ onNavigate }) {
     setToastMessage(msg);
     setTimeout(() => setToastMessage(null), 3500);
   };
+
+  // -------------------------------------------------------------
+  // LEADS ACTIONS
+  // -------------------------------------------------------------
+  const handleUpdateLeadStatus = (id, newStatus) => {
+    const updated = updateLeadStatus(id, newStatus);
+    setLeads(updated);
+    if (selectedLeadModal && selectedLeadModal.id === id) {
+      setSelectedLeadModal({ ...selectedLeadModal, status: newStatus });
+    }
+    showToast(`Inquiry status updated to ${newStatus.toUpperCase()}`);
+  };
+
+  const handleDeleteLead = (id) => {
+    if (window.confirm('Are you sure you want to delete this inquiry record?')) {
+      const updated = deleteLead(id);
+      setLeads(updated);
+      if (selectedLeadModal && selectedLeadModal.id === id) {
+        setSelectedLeadModal(null);
+      }
+      showToast('Inquiry deleted.');
+    }
+  };
+
+  const handleExportCsv = () => {
+    exportLeadsToCsv();
+    showToast('Leads exported to CSV successfully!');
+  };
+
+  const handleResetLeads = () => {
+    if (window.confirm('Reset inquiries to sample list?')) {
+      const def = resetLeadsToDefault();
+      setLeads(def);
+      showToast('Leads reset to default.');
+    }
+  };
+
+  // Filtered Leads
+  const filteredLeads = leads.filter(lead => {
+    if (leadFilter === 'new' && lead.status !== 'new') return false;
+    if (leadFilter === 'contacted' && lead.status !== 'contacted') return false;
+    if (leadFilter === 'resolved' && lead.status !== 'resolved') return false;
+    if (leadFilter === 'online' && lead.mode !== 'online') return false;
+    if (leadFilter === 'offline' && lead.mode !== 'offline') return false;
+
+    if (leadSearch.trim()) {
+      const q = leadSearch.toLowerCase();
+      const matchName = (lead.name || '').toLowerCase().includes(q);
+      const matchEmail = (lead.email || '').toLowerCase().includes(q);
+      const matchPhone = (lead.phone || '').toLowerCase().includes(q);
+      const matchArea = (lead.area || '').toLowerCase().includes(q);
+      const matchMsg = (lead.message || '').toLowerCase().includes(q);
+      return matchName || matchEmail || matchPhone || matchArea || matchMsg;
+    }
+    return true;
+  });
+
+  const newLeadsCount = leads.filter(l => l.status === 'new').length;
 
   const handleStartNewPost = () => {
     setEditingPostId(null);
@@ -342,14 +416,16 @@ export default function BlogAdminPage({ onNavigate }) {
           <div className="space-y-1 text-left">
             <div className="flex items-center gap-2">
               <span className="text-xs uppercase tracking-[0.2em] font-semibold text-[#1B6B75]">
-                VBH Content Studio
+                VBH Management Studio
               </span>
               <span className="bg-[#FAF0D7] text-[#B88E28] text-[10px] font-bold px-2 py-0.5 rounded-full border border-[#E9D9B2]">
                 Admin Verified
               </span>
             </div>
             <h1 className="text-2xl sm:text-3xl font-bold text-[#083B40]">
-              {studioSection === 'blog' ? 'Blog Publishing Studio' : 'Social Feeds & Video Hub'}
+              {studioSection === 'blog' && 'Blog Publishing Studio'}
+              {studioSection === 'social' && 'Social Feeds & Video Hub'}
+              {studioSection === 'leads' && 'Inquiries & Contact Leads'}
             </h1>
           </div>
 
@@ -365,6 +441,7 @@ export default function BlogAdminPage({ onNavigate }) {
                 <BookOpen size={13} />
                 <span>Blog Articles</span>
               </button>
+              
               <button
                 onClick={() => setStudioSection('social')}
                 className={`px-3.5 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
@@ -372,7 +449,22 @@ export default function BlogAdminPage({ onNavigate }) {
                 }`}
               >
                 <Film size={13} />
-                <span>Social Feeds & Videos</span>
+                <span>Social Feeds</span>
+              </button>
+
+              <button
+                onClick={() => setStudioSection('leads')}
+                className={`px-3.5 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 relative ${
+                  studioSection === 'leads' ? 'bg-[#083B40] text-white' : 'text-[#506062] hover:text-[#083B40]'
+                }`}
+              >
+                <Inbox size={13} />
+                <span>Leads & Inquiries</span>
+                {newLeadsCount > 0 && (
+                  <span className="px-1.5 py-0.2 bg-[#D4AF37] text-[#083B40] font-extrabold text-[9px] rounded-full">
+                    {newLeadsCount}
+                  </span>
+                )}
               </button>
             </div>
 
@@ -404,6 +496,16 @@ export default function BlogAdminPage({ onNavigate }) {
               )
             )}
 
+            {studioSection === 'leads' && (
+              <button
+                onClick={handleExportCsv}
+                className="btn-pill-teal text-xs py-2 px-4 cursor-pointer flex items-center gap-1.5"
+              >
+                <Download size={14} />
+                <span>Export CSV</span>
+              </button>
+            )}
+
             {/* Log Out Button */}
             <button
               onClick={handleLogout}
@@ -414,6 +516,284 @@ export default function BlogAdminPage({ onNavigate }) {
             </button>
           </div>
         </div>
+
+        {/* ------------------------------------------------------------- */}
+        {/* SECTION 1: LEADS & INQUIRIES STUDIO */}
+        {/* ------------------------------------------------------------- */}
+        {studioSection === 'leads' && (
+          <div className="pt-8 space-y-8 text-left">
+            
+            {/* Quick Metrics Bar */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+              <div className="bg-white p-5 rounded-2xl border border-[#EFEBE3] shadow-xs">
+                <span className="text-xs uppercase tracking-wider text-[#7A8B8D] font-bold block">Total Inquiries</span>
+                <span className="text-2xl sm:text-3xl font-bold text-[#083B40] block pt-1">{leads.length}</span>
+              </div>
+              <div className="bg-white p-5 rounded-2xl border border-[#EFEBE3] shadow-xs">
+                <span className="text-xs uppercase tracking-wider text-[#D4AF37] font-bold block">New / Unread</span>
+                <span className="text-2xl sm:text-3xl font-bold text-[#B88E28] block pt-1">{newLeadsCount}</span>
+              </div>
+              <div className="bg-white p-5 rounded-2xl border border-[#EFEBE3] shadow-xs">
+                <span className="text-xs uppercase tracking-wider text-[#1B6B75] font-bold block">Online Video</span>
+                <span className="text-2xl sm:text-3xl font-bold text-[#1B6B75] block pt-1">
+                  {leads.filter(l => l.mode === 'online').length}
+                </span>
+              </div>
+              <div className="bg-white p-5 rounded-2xl border border-[#EFEBE3] shadow-xs">
+                <span className="text-xs uppercase tracking-wider text-[#7A8B8D] font-bold block">Offline Noida Office</span>
+                <span className="text-2xl sm:text-3xl font-bold text-[#083B40] block pt-1">
+                  {leads.filter(l => l.mode === 'offline').length}
+                </span>
+              </div>
+            </div>
+
+            {/* Filter & Search Bar */}
+            <div className="bg-white p-4 sm:p-5 rounded-2xl border border-[#EFEBE3] shadow-xs flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
+              {/* Filter Tabs */}
+              <div className="flex flex-wrap items-center gap-1.5">
+                {[
+                  { id: 'all', label: `All (${leads.length})` },
+                  { id: 'new', label: `New (${newLeadsCount})` },
+                  { id: 'online', label: 'Online Video' },
+                  { id: 'offline', label: 'In-Person Office' },
+                  { id: 'contacted', label: 'Contacted' },
+                  { id: 'resolved', label: 'Resolved' },
+                ].map(f => (
+                  <button
+                    key={f.id}
+                    onClick={() => setLeadFilter(f.id)}
+                    className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-colors cursor-pointer ${
+                      leadFilter === f.id
+                        ? 'bg-[#083B40] text-white'
+                        : 'bg-gray-100 text-[#506062] hover:bg-gray-200'
+                    }`}
+                  >
+                    {f.label}
+                  </button>
+                ))}
+              </div>
+
+              {/* Search Box */}
+              <div className="relative min-w-[240px]">
+                <Search size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
+                <input
+                  type="text"
+                  value={leadSearch}
+                  onChange={(e) => setLeadSearch(e.target.value)}
+                  placeholder="Search seeker name, email, phone..."
+                  className="w-full pl-9 pr-4 py-2 text-xs rounded-xl border border-gray-200 focus:outline-none focus:border-[#083B40] bg-white"
+                />
+              </div>
+            </div>
+
+            {/* Leads Table / Card List */}
+            {filteredLeads.length === 0 ? (
+              <div className="p-12 text-center bg-white rounded-3xl border border-[#EFEBE3] space-y-3">
+                <Inbox size={40} className="text-gray-300 mx-auto" />
+                <h3 className="text-base font-bold text-[#083B40]">No Inquiries Found</h3>
+                <p className="text-xs text-[#7A8B8D]">No matching leads submitted or matching the current filter.</p>
+                <button onClick={handleResetLeads} className="text-xs text-[#1B6B75] hover:underline font-semibold pt-2">
+                  Seed Sample Inquiries
+                </button>
+              </div>
+            ) : (
+              <div className="bg-white rounded-3xl border border-[#EFEBE3] shadow-sm overflow-hidden divide-y divide-gray-100">
+                {filteredLeads.map((lead) => {
+                  const cleanPhone = (lead.phone || '').replace(/[^0-9]/g, '');
+                  const waUrl = `https://wa.me/${cleanPhone}?text=${encodeURIComponent(`Namaste ${lead.name}, thank you for contacting Visions By Himani regarding ${lead.area}. How can we assist you with scheduling your session?`)}`;
+
+                  return (
+                    <div key={lead.id} className="p-5 sm:p-6 hover:bg-[#FAF8F3]/60 transition-colors flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4">
+                      
+                      {/* Left: Info */}
+                      <div className="space-y-2 flex-1 min-w-0">
+                        <div className="flex flex-wrap items-center gap-2">
+                          <span className="text-sm sm:text-base font-bold text-[#083B40]">
+                            {lead.name}
+                          </span>
+
+                          {/* Mode Badge */}
+                          <span className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full flex items-center gap-1 ${
+                            lead.mode === 'online' 
+                              ? 'bg-teal-50 text-teal-800 border border-teal-200' 
+                              : 'bg-amber-50 text-amber-800 border border-amber-200'
+                          }`}>
+                            {lead.mode === 'online' ? <Video size={10} /> : <MapPin size={10} />}
+                            <span>{lead.mode === 'online' ? 'Online Video' : 'In-Person Office'}</span>
+                          </span>
+
+                          {/* Area of Clarity */}
+                          <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-gray-100 text-[#506062]">
+                            {lead.area}
+                          </span>
+
+                          {/* Time */}
+                          <span className="text-[11px] text-gray-400">
+                            • {new Date(lead.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
+                          </span>
+                        </div>
+
+                        {/* Contact details */}
+                        <div className="flex flex-wrap items-center gap-4 text-xs text-[#6B7C7E]">
+                          <a href={`tel:${lead.phone}`} className="hover:text-[#083B40] font-medium flex items-center gap-1">
+                            <PhoneCall size={12} className="text-[#C9A84E]" />
+                            <span>{lead.phone}</span>
+                          </a>
+                          <a href={`mailto:${lead.email}`} className="hover:text-[#083B40] flex items-center gap-1">
+                            <Mail size={12} className="text-[#C9A84E]" />
+                            <span>{lead.email}</span>
+                          </a>
+                        </div>
+
+                        {/* Message Snippet */}
+                        <p className="text-xs text-[#506062] line-clamp-2 leading-relaxed bg-[#FAF8F3] p-2.5 rounded-xl border border-[#EFEBE3]">
+                          "{lead.message}"
+                        </p>
+                      </div>
+
+                      {/* Right: Status Dropdown & Action Buttons */}
+                      <div className="flex flex-wrap items-center gap-2.5 flex-shrink-0 pt-2 lg:pt-0">
+                        
+                        {/* Status Selector */}
+                        <select
+                          value={lead.status}
+                          onChange={(e) => handleUpdateLeadStatus(lead.id, e.target.value)}
+                          className={`text-xs font-bold px-3 py-1.5 rounded-xl border focus:outline-none cursor-pointer ${
+                            lead.status === 'new' 
+                              ? 'bg-amber-50 text-amber-800 border-amber-300' 
+                              : lead.status === 'contacted'
+                              ? 'bg-blue-50 text-blue-800 border-blue-300'
+                              : 'bg-green-50 text-green-800 border-green-300'
+                          }`}
+                        >
+                          <option value="new">🟡 Status: New</option>
+                          <option value="contacted">🔵 Status: Contacted</option>
+                          <option value="resolved">🟢 Status: Resolved</option>
+                        </select>
+
+                        {/* WhatsApp Action */}
+                        <a
+                          href={waUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="p-2 rounded-xl bg-[#E8F8EE] text-[#25D366] hover:bg-[#D0F4DC] border border-[#A7E8BD] transition-colors"
+                          title="Message seeker on WhatsApp"
+                        >
+                          <MessageCircle size={16} />
+                        </a>
+
+                        {/* View Details Modal */}
+                        <button
+                          onClick={() => setSelectedLeadModal(lead)}
+                          className="px-3 py-1.5 rounded-xl bg-gray-100 hover:bg-gray-200 text-xs font-semibold text-[#083B40] transition-colors cursor-pointer"
+                        >
+                          View Details
+                        </button>
+
+                        {/* Delete Button */}
+                        <button
+                          onClick={() => handleDeleteLead(lead.id)}
+                          className="p-2 rounded-xl text-gray-400 hover:text-red-600 hover:bg-red-50 transition-colors cursor-pointer"
+                          title="Delete Lead"
+                        >
+                          <Trash2 size={16} />
+                        </button>
+                      </div>
+
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+
+            {/* Selected Lead Details Modal */}
+            {selectedLeadModal && (
+              <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-fadeIn">
+                <div className="bg-white w-full max-w-lg rounded-3xl p-6 sm:p-8 shadow-2xl border border-[#E8DFC8] space-y-5 text-left relative">
+                  <button
+                    onClick={() => setSelectedLeadModal(null)}
+                    className="absolute top-5 right-5 w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-600 flex items-center justify-center cursor-pointer"
+                  >
+                    <X size={16} />
+                  </button>
+
+                  <div className="space-y-1">
+                    <span className="text-[10px] uppercase font-bold tracking-[0.2em] text-[#C9A84E]">
+                      INQUIRY DOSSIER
+                    </span>
+                    <h3 className="text-xl font-bold text-[#083B40]">
+                      {selectedLeadModal.name}
+                    </h3>
+                    <span className="text-xs text-gray-400 block">
+                      Submitted on {new Date(selectedLeadModal.createdAt).toLocaleString()}
+                    </span>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-3 p-4 rounded-2xl bg-[#FAF8F3] border border-[#EFEBE3] text-xs">
+                    <div>
+                      <span className="text-gray-400 block font-semibold">Phone:</span>
+                      <a href={`tel:${selectedLeadModal.phone}`} className="font-bold text-[#083B40] hover:underline">
+                        {selectedLeadModal.phone}
+                      </a>
+                    </div>
+                    <div>
+                      <span className="text-gray-400 block font-semibold">Email:</span>
+                      <a href={`mailto:${selectedLeadModal.email}`} className="font-bold text-[#083B40] hover:underline truncate block">
+                        {selectedLeadModal.email}
+                      </a>
+                    </div>
+                    <div>
+                      <span className="text-gray-400 block font-semibold">Mode Preference:</span>
+                      <span className="font-bold text-[#083B40]">
+                        {selectedLeadModal.mode === 'online' ? 'Online Video Call' : 'In-Person Noida Sanctuary'}
+                      </span>
+                    </div>
+                    <div>
+                      <span className="text-gray-400 block font-semibold">Topic:</span>
+                      <span className="font-bold text-[#083B40]">{selectedLeadModal.area}</span>
+                    </div>
+                  </div>
+
+                  <div className="space-y-1.5">
+                    <span className="text-xs font-bold text-[#083B40] uppercase tracking-wide">
+                      Seeker Concern / Message
+                    </span>
+                    <div className="p-4 rounded-2xl bg-white border border-gray-200 text-xs sm:text-sm text-[#2D3E40] leading-relaxed max-h-48 overflow-y-auto">
+                      {selectedLeadModal.message}
+                    </div>
+                  </div>
+
+                  <div className="pt-2 flex items-center justify-between gap-3 border-t border-gray-100">
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs font-bold text-gray-500">Status:</span>
+                      <select
+                        value={selectedLeadModal.status}
+                        onChange={(e) => handleUpdateLeadStatus(selectedLeadModal.id, e.target.value)}
+                        className="text-xs font-bold px-3 py-1.5 rounded-xl border border-gray-300"
+                      >
+                        <option value="new">🟡 New</option>
+                        <option value="contacted">🔵 Contacted</option>
+                        <option value="resolved">🟢 Resolved</option>
+                      </select>
+                    </div>
+
+                    <a
+                      href={`https://wa.me/${(selectedLeadModal.phone || '').replace(/[^0-9]/g, '')}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="btn-pill-teal text-xs py-2 px-4 inline-flex items-center gap-1.5"
+                    >
+                      <MessageCircle size={14} />
+                      <span>Chat WhatsApp</span>
+                    </a>
+                  </div>
+
+                </div>
+              </div>
+            )}
+
+          </div>
+        )}
 
         {/* SECTION A: BLOG ARTICLES MANAGER */}
         {studioSection === 'blog' && (

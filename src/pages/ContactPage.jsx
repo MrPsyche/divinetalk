@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   MapPin, Phone, Mail, MessageCircle, Navigation, Video, 
   Calendar, Clock, Shield, Globe, Send, CheckCircle, ChevronRight,
@@ -6,6 +6,7 @@ import {
 } from 'lucide-react';
 import { BRAND_ASSETS, SOCIAL_LINKS } from '../data/siteContent';
 import { CONTACT_INFO } from '../data/bookingLinks';
+import { saveLead } from '../utils/leadsStorage';
 
 export default function ContactPage({ onOpenBooking, onNavigate }) {
   const [formData, setFormData] = useState({
@@ -27,6 +28,8 @@ export default function ContactPage({ onOpenBooking, onNavigate }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    // Save to persistent leads storage for Admin Panel
+    saveLead(formData);
     setSubmitted(true);
     setTimeout(() => {
       setSubmitted(false);
