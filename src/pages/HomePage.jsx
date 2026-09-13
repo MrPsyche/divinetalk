@@ -8,6 +8,7 @@ import ProcessTimeline from '../components/ProcessTimeline';
 import FoundersSection from '../components/FoundersSection';
 import SocialFeedSection from '../components/SocialFeedSection';
 import FaqAccordion from '../components/FaqAccordion';
+import OfficeLocationSection from '../components/OfficeLocationSection';
 
 export default function HomePage({ onOpenBooking, onNavigate }) {
   const handleScrollToSection = (sectionId) => {
@@ -58,10 +59,17 @@ export default function HomePage({ onOpenBooking, onNavigate }) {
         <SocialFeedSection />
       </div>
 
-      {/* 10: Frequently Asked Questions */}
+      {/* 09: Frequently Asked Questions */}
       <FaqAccordion 
         onOpenBooking={onOpenBooking} 
       />
+
+      {/* 10: Online Booking & In-Person Office Sanctuary with Live Map */}
+      <div id="connect-office">
+        <OfficeLocationSection 
+          onOpenBooking={onOpenBooking} 
+        />
+      </div>
     </div>
   );
 }
