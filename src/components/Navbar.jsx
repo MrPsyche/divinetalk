@@ -20,6 +20,7 @@ export default function Navbar({ currentPath, onNavigate, onOpenBooking }) {
     { label: 'Services', path: '/#services' },
     { label: 'Real-Life Situations', path: '/#situations' },
     { label: 'Blog', path: '/blog' },
+    { label: 'Contact', path: '/contact' },
   ];
 
   const handleLinkClick = (path) => {

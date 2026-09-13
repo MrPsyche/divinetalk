@@ -67,8 +67,8 @@ export default function Footer({ onNavigate, onOpenBooking }) {
                 </button>
               </li>
               <li>
-                <button onClick={() => onNavigate('/#connect-office')} className="hover:text-white transition-colors cursor-pointer">
-                  Office Location
+                <button onClick={() => onNavigate('/contact')} className="hover:text-white transition-colors cursor-pointer">
+                  Contact & Sanctuary
                 </button>
               </li>
               <li>
