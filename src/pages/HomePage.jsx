@@ -6,7 +6,6 @@ import ClaritySelector from '../components/ClaritySelector';
 import RealLifeSituations from '../components/RealLifeSituations';
 import ProcessTimeline from '../components/ProcessTimeline';
 import FoundersSection from '../components/FoundersSection';
-import SacredHealingPreview from '../components/SacredHealingPreview';
 import SocialFeedSection from '../components/SocialFeedSection';
 import FaqAccordion from '../components/FaqAccordion';
 
@@ -54,12 +53,7 @@ export default function HomePage({ onOpenBooking, onNavigate }) {
         onOpenBooking={onOpenBooking} 
       />
 
-      {/* 08: A Sacred Healing Vertical */}
-      <SacredHealingPreview 
-        onOpenBooking={onOpenBooking} 
-      />
-
-      {/* 09: Unified Live Channels, Video Reflections & Client Stories */}
+      {/* 08: Unified Live Channels, Video Reflections & Client Stories */}
       <div id="social-feeds">
         <SocialFeedSection />
       </div>

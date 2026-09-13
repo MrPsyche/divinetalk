@@ -20,7 +20,7 @@ export const BOOKING_DESTINATIONS = {
 
 export const CONTACT_INFO = {
   address: "64 (Ground Floor), Block L, Sector 25, NOIDA - 201301, Uttar Pradesh, India",
-  phoneNumbers: ["+91-9319238007", "+91-9582564069"],
+  phoneNumbers: ["+91-9319238007"],
   email: "Admin@adivinetalk.com",
   whatsappPreBooking: "+91 98838 13143",
   whatsappRescheduling: "+91 75109 97770",

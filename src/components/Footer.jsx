@@ -126,11 +126,6 @@ export default function Footer({ onNavigate, onOpenBooking }) {
               </div>
 
               <div className="flex items-center gap-2.5">
-                <Phone size={14} className="text-[#C9A84E] flex-shrink-0" />
-                <span>+91 95825 64069</span>
-              </div>
-
-              <div className="flex items-center gap-2.5">
                 <Mail size={14} className="text-[#C9A84E] flex-shrink-0" />
                 <a href="mailto:admin@adivinetalk.com" className="hover:text-white underline decoration-white/30">
                   admin@visionsbyhimani.com

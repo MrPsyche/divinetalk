@@ -245,8 +245,8 @@ export const TESTIMONIALS = [
 
 export const FAQS = [
   {
-    question: "What does “Instant Answers” mean?",
-    answer: "It means you don't have to wait days for charts, lengthy analysis or a written prediction. Your consultation is a direct, one-on-one conversation where you can ask your questions and receive intuitive guidance during the session itself."
+    question: "What does “Instant Clarity” mean?",
+    answer: "At Visions By Himani, there are no birth charts, lengthy analyses or calculations to interpret. There is also no dependence on personal interpretations of charts that may vary from one practitioner to another. Himani Dogra, our primary practitioner, receives what she describes as divine visions — Divya Drishti (Sanskrit). These visions may reveal aspects of the past, the present situation and possible future directions relevant to your question. Himani sees the visions and shares what she sees with you during the session itself. This directness is what gives you Instant Clarity."
   },
   {
     question: "Do I need to prepare anything before my session?",
@@ -266,7 +266,7 @@ export const FAQS = [
   },
   {
     question: "Are the insights absolute, or do I have free will?",
-    answer: "Your free will is 100% respected. Guidance is not a fixed destiny. VBH offers unclouded perspective so you can understand the dynamics at play and make your own sovereign choices with confidence."
+    answer: "Your free will always remains yours. In Himani's understanding, what is revealed is what the Universe chooses to show at that moment. She shares and discusses the guidance with you, helping you look at the situation from a clearer, unclouded perspective. The purpose is not to make your decisions for you, but to help you understand the dynamics at play and make your own choices with greater clarity and confidence."
   }
 ];
 
