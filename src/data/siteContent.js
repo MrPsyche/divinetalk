@@ -4,13 +4,14 @@
  */
 
 import himaniNewPhoto from '../assets/himani_new.jpg';
+import logoImg from '../assets/logo.jpg';
 
 export const BRAND_ASSETS = {
   brandName: "Visions By Himani",
   brandAcronym: "VBH",
   previousName: "A Divine Talk",
   tagline: "Get Instant Clarity. Move Forward With Confidence.",
-  logoUrl: "https://cdn.tealfeed.com/website-builder/1757690035628.png",
+  logoUrl: logoImg,
   himaniHero: himaniNewPhoto,
   himaniFounders: himaniNewPhoto,
   karanFounders: "https://cdn.tealfeed.com/website-builder/1756301846556.jpeg",

@@ -43,11 +43,11 @@ export default function Navbar({ currentPath, onNavigate, onOpenBooking }) {
             onClick={() => handleLinkClick('/')}
             className="flex items-center gap-3 text-left focus:outline-none group cursor-pointer"
           >
-            <div className="w-10 h-10 rounded-full overflow-hidden flex items-center justify-center flex-shrink-0 bg-[#083B40] text-white">
+            <div className="w-11 h-11 rounded-full overflow-hidden flex items-center justify-center flex-shrink-0 bg-white border border-[#E2DCD2]/80 shadow-xs p-0.5">
               <img
                 src={BRAND_ASSETS.logoUrl}
                 alt="Visions By Himani"
-                className="w-full h-full object-contain"
+                className="w-full h-full object-cover rounded-full"
               />
             </div>
             

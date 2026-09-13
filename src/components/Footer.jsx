@@ -14,11 +14,11 @@ export default function Footer({ onNavigate, onOpenBooking }) {
           {/* Col 1: Brand (4 cols) */}
           <div className="lg:col-span-4 space-y-4">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full overflow-hidden flex items-center justify-center flex-shrink-0 bg-[#083B40]">
+              <div className="w-11 h-11 rounded-full overflow-hidden flex items-center justify-center flex-shrink-0 bg-white p-0.5 shadow-md">
                 <img
                   src={BRAND_ASSETS.logoUrl}
                   alt="Visions By Himani"
-                  className="w-full h-full object-contain"
+                  className="w-full h-full object-cover rounded-full"
                 />
               </div>
               <div>
