@@ -4,18 +4,18 @@
  */
 export const BOOKING_DESTINATIONS = {
   // General practitioner listing / booking portal
-  DIRECTORY: "https://www.bookings.tealfeed.com/a-divine-talk",
+  DIRECTORY: "https://www.bookings.tealfeed.com/members/689b2ac6cfe97ed23e0aa2b8",
   
   // HimaniK Dograa (Visionary Guidance & 6th Sense Consultation)
   HIMANI_PROFILE: "https://www.bookings.tealfeed.com/members/689b2ac6cfe97ed23e0aa2b8",
   
   // Karan Dogra / DDogra (Platform & Energy Healer)
-  KARAN_PROFILE: "https://www.bookings.tealfeed.com/members/68b9c70f0ff3eab4ed940076",
+  KARAN_PROFILE: "https://www.bookings.tealfeed.com/members/689b2ac6cfe97ed23e0aa2b8",
   
-  // Deep links for specific A Sacred Healing sessions:
-  SACRED_SLEEP: "https://tealfeed.com/ddogra_479662/connect/call?callType=68e783232708343447348e88",
-  TRAUMA_CORD_CUTTING: "https://tealfeed.com/ddogra_479662/connect/call?callType=68e783231bdadced1cb64c98",
-  STRESS_RELEASE: "https://tealfeed.com/ddogra_479662/connect/call?callType=68e78323d75c05d38031e477",
+  // Direct booking link:
+  SACRED_SLEEP: "https://www.bookings.tealfeed.com/members/689b2ac6cfe97ed23e0aa2b8",
+  TRAUMA_CORD_CUTTING: "https://www.bookings.tealfeed.com/members/689b2ac6cfe97ed23e0aa2b8",
+  STRESS_RELEASE: "https://www.bookings.tealfeed.com/members/689b2ac6cfe97ed23e0aa2b8",
 };
 
 export const CONTACT_INFO = {

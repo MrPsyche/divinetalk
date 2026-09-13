@@ -52,10 +52,7 @@ export default function App() {
   };
 
   const handleOpenBooking = (data = {}) => {
-    setBookingModalState({
-      isOpen: true,
-      data,
-    });
+    window.open("https://www.bookings.tealfeed.com/members/689b2ac6cfe97ed23e0aa2b8", "_blank", "noopener,noreferrer");
   };
 
   const handleCloseBooking = () => {
